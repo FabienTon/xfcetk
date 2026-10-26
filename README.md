@@ -1,4 +1,4 @@
-# xfcetk
+# xfcetk a XFCE desktop clone made in pure tcl tk language.
 ![the desktop](screenshot/260224-xftk.jpg)
 
 # Description

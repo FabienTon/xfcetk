@@ -19,6 +19,9 @@ tk 8.x
 tcl-sqlite
 Tix
 
+# Download last zip
+[Direct link for last project (.zip)](https://github.com/FabienTon/xfcetk/archive/refs/heads/main.zip)
+
 # How to run 
 in command line :
 wish main.tk

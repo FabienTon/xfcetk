@@ -1,4 +1,6 @@
 # xfcetk
+![the desktop](screenshot/260224-xftk.jpg)
+
 # Description
 Xfcetk want to recreate xfce desktop with only tcl language tk library.
 You have to install :
@@ -28,8 +30,6 @@ this project is developped in English on French locale computer. Sorry if some w
 Mit License means COMPLETLY FREE to use and redistribute.
 
 # Screenshots
-![the desktop](screenshot/260224-xftk.jpg)
-
 ![the desktop 2](screenshot/260228-desk3.jpg)
 
 ![Control panel](screenshot/260222-xftksettings.jpg)

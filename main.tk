@@ -1,0 +1,111 @@
+#!/usr/bin/wish
+# XFTK Desktop is a clone of Xfce4 Desktop made in pure Tcltk
+# by Fabien . More information on www.tcltk.fr
+
+package require Tk
+package require Tix
+package require sqlite3
+source fabout.tk ; # Form about xftk
+source faboutme.tk ; # Form about me
+source fappearance.tk ; # Form Appearance of xftk
+source fdesktopconfig.tk ; # Form to configure Desktop
+source fexplorer.tk ; # Form xftk defaut files/folders explorer
+source ffavourite.tk ; # Form to open favourite applications
+source fpanelconfig.tk ; # Form to configure JWM bar
+source fsettingmanager.tk ; # Form Settings manager
+source icon.tk ; # icon datas for all image in project
+source register.tk ; # Access to database and variables.
+source colorchooser.tk ; # New color chooser like gtk3
+source filechooser.tk ; # New modern file chooser like xfce
+
+option add *font {Standart 9} ; # Default background
+
+# Declare global variables
+set homedir $env(HOME)
+set desktopdir $env(HOME)
+set counter 0
+set wcount 0 ; # autoincrement unique index for new form
+set IDcounter  0 ; # icon desktop counter
+set whatshortcut 0 ; # what shortcut when open desktop shortcut form
+set dfg #FFFFFF ; # Desktop foreground
+set dbg #336699  ; # Desktop background
+set Ebg #FFFFFF ; # Explorer background
+set Efg #000000 ; # Explorer foreground
+set fd {Standart 9} ;  # Font by default
+set ft {Standart 9 bold} ; # Font Title
+set Icomputer [list 1 100 100 48 "Poste de travail" "/"]
+set Ibin [list 1 300 200 48 "Corbeille" "~/.trash"]
+set ihome [list 1 100 300 48 "Dossier\npersonnel" $env(HOME)]
+set terminal "xfce4-terminal"
+set Bname [list "Bureau" "Corbeille" "Documents" "Vidéos" "Développement" "Musique" "Téléchargement" "Images"] ; # defaut bookmarks list
+
+########### ROOT FORM ON SCREEN ########################################
+wm overrideredirect . 1
+set wi [winfo vrootwidth  .]
+set he [winfo vrootheight  .]; set fois "x"
+wm geometry . $wi$fois$he+0+0 ; # fullscreen
+place [canvas .desk -bg #336699 -relief flat] -x -2 -y -2 -width [winfo vrootwidth  .] -height [winfo vrootheight  .]
+
+set icomputer [.desk create image 100 100 -image i44screen]
+set ncomputer [.desk create text 100 130 -text "Poste de travail" -fill white -font $fd]
+set ibin [.desk create image 200 200 -image i48bin]
+set nbin [.desk create text 200 230 -text "Corbeille" -fill white -font $fd]
+place [button .quit -text "exit tempo" -command {exit} ] -x 0 -y 0
+lower .
+bind .desk <3> {D_Popup_Menu %x %y}
+.desk bind $icomputer <B1-Motion> {moveit $icomputer %x %y ; moveit $ncomputer %x [expr %y + 30]}
+.desk bind $ibin <B1-Motion> {moveit $ibin %x %y ; moveit $nbin %x [expr %y + 30]}
+.desk bind $ibin <Double-1> {W_increment ; Form_Explorer "Corbeille" $env(HOME)}
+.desk bind $icomputer <3> {Computer_Popup_Menu %x %y}
+.desk bind $icomputer <Double-1> {W_increment ; Form_Explorer "Poste de travail" "/"}
+
+proc moveit {object x y} { .desk coords $object $x $y }
+
+# Popup menu on right click on desktop
+proc D_Popup_Menu {theX theY} {
+if {[winfo exist .desk.cp]==1} {destroy .desk.cp}
+menu .desk.cp -tearoff 0
+.desk.cp add command -label "Ouvrir dans une nouvelle fenêtre" -underline 0 -image i16window -compound left -command {W_increment ; global desktopdir ; Form_Explorer "Bureau" $desktopdir}
+.desk.cp add separator
+.desk.cp add command -label "Créer un lanceur..." -underline 0  -image i16launcher -compound left
+.desk.cp add command -label "Créer un lien URL" -underline 0  -image i16url -compound left
+.desk.cp add command -label "Créerun dossier..." -underline 0  -image i16addfolder -compound left
+menu .desk.cp.hlp -tearoff 0
+.desk.cp add cascade -label "Créer un document" -menu .desk.cp.hlp -underline 0  -image i16addfile -compound left
+.desk.cp.hlp add command -label "Document texte" -underline 0 
+.desk.cp add separator
+.desk.cp add command -label "Coller" -underline 0  -image i16paste -compound left
+.desk.cp add separator
+.desk.cp add command -label "Ouvrir dans un terminal" -underline 0  -image i16terminal -compound left -command {global terminal ; exec $terminal &}
+.desk.cp add command -label "Ouvrir en tant qu'utilisateur root" -underline 0  -image i16user -compound left
+.desk.cp add command -label "Créer un lien" -underline 0  -image i16link -compound left
+.desk.cp add command -label "Chercher"  -underline 8  -image i16find -compound left
+.desk.cp add separator
+.desk.cp add command -label "Organiser les icônes du bureau"  -underline 8  -image i16organise -compound left
+.desk.cp add command -label "Paramètres du bureau..."  -underline 8  -image i16desktop -compound left -command Form_Desktop_Config
+.desk.cp add separator
+.desk.cp add command -label "tempo ouvre le settings manager" -underline 0  -image i16tempo -compound left -command Form_Settings_Manager
+.desk.cp add command -label "Propriétés..." -underline 0  -image i16property -compound left -command {W_increment ; global desktopdir ; Form_File_Properties "Bureau" $desktopdir}
+set x [expr [winfo rootx .desk]+$theX]
+set y [expr [winfo rooty .desk]+$theY]
+tk_popup .desk.cp $x $y
+}
+
+# Test if form already exists
+proc Test_Form_Exist {f} {
+	if {[winfo exist $f]==1} {destroy $f}
+}
+
+proc Form_Create_Launcher {} {
+	
+}
+
+# Increment window index to create new form
+proc W_increment {} { 
+global wcount
+set wcount [incr wcount]
+}
+
+
+
+

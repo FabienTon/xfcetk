@@ -1,0 +1,55 @@
+# Color chooser as gt4 view.
+# Made by Fabien february 2025
+# www.tcltk.fr
+
+
+package require Tk
+set Dialog_Color #000000
+
+proc Choose_Color {} {
+global Dialog_Color
+set counter [list "0" "1" "2" "3" "4" "5" "6" "7" "8"]
+set custom [list "0" "1" "2" "3" "4" "5" "6" "7"]
+set r0 [list "#99c1f1" "#8ff0a4" "#f9f06b" "#ffbe6f" "#f66151" "#dc8add" "#cdab8f" "#ffffff" "#77767b"]
+set r1 [list "#62a0ea" "#57e389" "#f8e45c" "#ffa348" "#ed333b" "#c061cb" "#b5835a" "#f6f5f4" "#5e5c64"]
+set r2 [list "#3584e4" "#33d17a" "#f6d32d" "#ff7800" "#e01b24" "#9141ac" "#986a44" "#deddda" "#3d3846"]
+set r3 [list "#1c71d8" "#2ec27e" "#f5c211" "#e66100" "#c01c28" "#813d9c" "#865e3c" "#c0bfbc" "#241f31"]
+set r4 [list "#1a5fb4" "#26a269" "#e5a50a" "#c64600" "#a51d2d" "#613583" "#63452c" "#9a9996" "#000000"]
+toplevel ._CC
+wm resizable ._CC 0 0
+wm geometry ._CC 490x340
+wm title ._CC " Select color "
+set w ._CC
+pack [frame $w.f0] -fill x -padx 6 -pady 2
+foreach c $counter {pack [button $w.f0.b$c -bg [lindex $r0 $c] -command [list Return_Color [lindex $r0 $c]]] -side left -fill both -expand 1}
+pack [frame $w.f1] -fill x -padx 6 -pady 2
+foreach c $counter {pack [button $w.f1.b$c -bg [lindex $r1 $c] -command [list Return_Color [lindex $r1 $c]]] -side left -fill both -expand 1}
+pack [frame $w.f2] -fill x -padx 6 -pady 2
+foreach c $counter {pack [button $w.f2.b$c -bg [lindex $r2 $c] -command [list Return_Color [lindex $r2 $c]]] -side left -fill both -expand 1}
+pack [frame $w.f3] -fill x -padx 6 -pady 2
+foreach c $counter {pack [button $w.f3.b$c -bg [lindex $r3 $c] -command [list Return_Color [lindex $r3 $c]]] -side left -fill both -expand 1}
+pack [frame $w.f4] -fill x -padx 6 -pady 3
+foreach c $counter {pack [button $w.f4.b$c -bg [lindex $r4 $c] -command [list Return_Color [lindex $r4 $c]]] -side left -fill both -expand 1}
+pack [label $w.l5 -text "Custom" -anchor w] -fill x -padx 6 -pady 3
+pack [frame $w.f6] -fill x -padx 6 -pady 6
+pack [button $w.f6.bselect -text "+" -font "Fixed 15" -command {_CCcustom_Save}] -side left -fill both -expand 1
+pack [button $w.f6.bcustom -bg #dedede -command {Return_Color [._CC.f6.bcustom cget -background]}] -side left -fill both -expand 1
+foreach c $custom { pack [label $w.f6.b$c -bg #dedede] -side left -fill both -expand 1}
+
+# For ::tk::SetFocusGrab and ::tk::RestoreFocusGrab see Tk library file tk.tcl
+::tk::SetFocusGrab $w ""
+vwait Dialog_Color
+set result $Dialog_Color
+::tk::RestoreFocusGrab $w ""	;# side effect: destroys $w
+return $result
+}
+
+proc Return_Color {val} {
+global Dialog_Color
+set Dialog_Color $val
+}
+
+proc _CCcustom_Save {} {
+set c  [tk_chooseColor -title "Select color" -parent .]
+._CC.f6.bcustom configure -background $c
+}

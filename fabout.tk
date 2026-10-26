@@ -1,0 +1,105 @@
+# Form about xftk
+
+
+
+proc Form_Xftk_About {} { 
+if {[winfo exist ._fabout] eq 1} {destroy ._fabout}
+toplevel ._fabout
+wm geometry ._fabout 560x630+200+50
+wm iconphoto ._fabout i60logoxftk
+wm title ._fabout "A propos de l'environnement de bureau Xftk"
+pack [frame ._fabout.f0 -bg white] -fill x
+pack [label ._fabout.f0.logo -bg white -image i60logoxftk ] -side left -fill both
+pack [frame ._fabout.f0.f1 -bg white] -fill both -expand 1
+pack [label ._fabout.f0.f1.l2 -text "A propos de l'environnement de bureau Xftk" -font {Serif 11 bold} -bg white -fg black -anchor w] -fill both -expand 1
+pack [label ._fabout.f0.f1.l3 -text "Version 1.0 fourni par www.tcltk.fr" -font {Serif 10} -bg white  -fg black -anchor w] -fill both -expand 1
+# Main notebook in body
+pack [frame ._fabout.fb -bg #CFCFCF -padx 5 -pady 5] -fill both -expand 1
+pack [ttk::notebook ._fabout.fb.nb] -fill both -expand 1
+ttk::frame ._fabout.fb.nb.tab1
+._fabout.fb.nb add ._fabout.fb.nb.tab1 -text "A propos"
+pack [text ._fabout.fb.nb.tab1.t1 -font {Serif 9}] -fill both -expand 1 -padx 5 -pady 5
+Text_About
+ttk::frame ._fabout.fb.nb.tab2
+._fabout.fb.nb add ._fabout.fb.nb.tab2 -text "Crédit"
+pack [text ._fabout.fb.nb.tab2.t2 -font {Serif 9}] -fill both -expand 1 -padx 5 -pady 5
+Text_Credit
+ttk::frame ._fabout.fb.nb.tab3
+._fabout.fb.nb add ._fabout.fb.nb.tab3 -text "Copyright"
+pack [text ._fabout.fb.nb.tab3.t3 -font {Serif 9}] -fill both -expand 1 -padx 5 -pady 5
+Text_Copyright
+# Bottom button menu
+pack [frame ._fabout.bot -padx 5 -pady 5] -fill x -side bottom
+pack [button ._fabout.bot.bhelp -text "Aide" -image i16help -compound left] -side left -fill both
+pack [button ._fabout.bot.bcancel -text "Fermer" -image i16quit -compound left -command {destroy ._fabout}] -side right -fill both
+}
+
+
+proc Text_About {} { 
+._fabout.fb.nb.tab1.t1 delete 0.0 end
+._fabout.fb.nb.tab1.t1 insert 0.0 {
+Xftk est un ensemble de programmes qui, ensemble, fournissent un environnement de bureau complet. Les programmes suivants font partie du cœur de Xftk :
+
+Gestionnaire de fenêtres (jwm)
+Gère le placement des fenêtres sur l’écran.
+
+Tableau de bord (Xftk-panel)
+Lanceurs de programme, boutons des fenêtres, menu des applications, changeur d’espace de travail et plus.
+
+Gestionnaire du bureau (xftk-desktop)
+Définit la couleur ou l’image d’arrière-plan avec un menu des applications optionnel ou des icônes pour les applications minimisées ou des lanceurs, périphériques et dossiers.
+
+Gestionnaire de fichiers (xftk-explorer)
+Un gestionnaire de fichier moderne pour le bureau Unix/Linux, se voulant simple d’utilisation et rapide.
+
+Gestionnaire de volumes (xftk-volman)
+Gestion automatique des disques et médias amovibles pour Thunar.
+
+Gestionnaire de sessions (Xftk-session)
+Restaure votre session au démarrage et vous permet d’éteindre l’ordinateur depuis Xftk.
+
+Paramètres système (Xftk-settings)
+Système de configuration contrôlant différents aspects du bureau tels que l’apparence, l’écran ou les paramètres du clavier et de la souris.
+
+Liste des applications (Xftk-afinder)
+Affiche les applications installées sur votre système par catégories, afin que vous puissiez rapidement les trouver et les lancer.
+
+Service des paramètres (xfconf)
+Système de stockage de configuration basé sur D-Bus.
+
+Une bibliothèque de menus (garcon)
+Une implémentation de menus compatible freedesktop.org basée sur GLib et GIO.
+
+Service de miniatures (tumbler)
+Service de miniatures implémentant la spécification D-Bus de gestion des miniatures.
+
+Xftk est également une plateforme de développement fournissant plusieurs bibliothèques qui aident les programmeurs à créer des applications qui s’intègrent parfaitement dans l’environnement de bureau.
+
+Les composants Xftk sont sous licence libre ou open source ; GPL ou BSDL pour les applications et LGPL ou BSDL pour les bibliothèques. Consultez la documentation, le code source ou le site web de Xftk (https://www.Xftk.org) pour plus d’informations.
+
+Merci pour l’intérêt porté à Xftk.
+
+- L’équipe de développement Xftk
+	}
+}
+
+proc Text_Credit {} { 
+._fabout.fb.nb.tab2.t2 delete 0.0 end
+._fabout.fb.nb.tab2.t2 insert 0.0 {
+Développeurs principaux
+Fabien Toniutti <fabien.toniutti@free.fr>
+
+www.tcltk.fr
+}
+}
+
+proc Text_Copyright {} { 
+._fabout.fb.nb.tab3.t3 delete 0.0 end
+._fabout.fb.nb.tab3.t3 insert 0.0 {
+Les droits d’auteur de Xftk 4 appartiennent à Olivier Fourdan (fourdan@Xftk.org). Les différents composants sont protégés par copyright par leurs auteurs respectifs.
+
+Les paquets libXftkui, libXftkutil et exo sont distribués sous les termes de la GNU Library General Public License telle que publiée par la Free Software Foundation ; que ce soit en version 2, ou (à votre guise) toute version ultérieure.
+
+Les paquets Xftk-explorer, Xftk-finder, Xftk-panel, Xftk-session, Xftk-settings, xfconf, xfdesktop et jwm sont distribués sous les termes de la GNU General Public License telle que publiée par la Free Software Foundation ; que ce soit en version 2, ou (à votre guise) toute version ultérieure.
+}
+}

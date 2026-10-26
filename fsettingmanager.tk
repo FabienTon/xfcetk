@@ -1,0 +1,230 @@
+# Control center for the D desktop
+# Made in february 2025 in pure tcltk
+# by fabien from France
+# www.tcltk.fr
+
+# Form settings manager
+proc Form_Settings_Manager {} { 
+if {[winfo exist .fsm]==1} {destroy .fsm} ; # if form exist destroy it
+toplevel .fsm
+wm title .fsm "Paramètres"
+wm geometry .fsm 800x600+450+100
+wm iconphoto .fsm i48settings
+set is 48 ; # icon size
+set fnt "Serif 15" ; # fonts
+set bg #FFFFFF ; # Background color of Form
+set fg #000000 ; # Background color of Form
+tixDisplayStyle imagetext -bg #FF0000
+set myid 0
+set clic 0
+
+# Create search bar
+pack [frame .fsm.sb] -fill x
+pack [label .fsm.sb.logo -bg $bg -image i48settings] -fill both -side left
+pack [frame .fsm.sb.f0 -bg $bg -padx 15] -fill both -expand 1 -side left
+pack [label .fsm.sb.f0.t -text "Settings" -font "Sans 10" -anchor w -bg $bg] -fill x
+pack [label .fsm.sb.f0.d -text "Customize your desktop" -font "Serif 8" -anchor w -bg $bg] -fill x
+pack [frame .fsm.sb.f1 -bg $bg -pady 10 -padx 4] -fill both -side right
+pack [entry .fsm.sb.f1.find -bg $bg] -fill both  -side left -pady 10
+pack [label .fsm.sb.f1.mag -image i32mag -compound right -bg white] -fill both -side right
+
+# Body
+pack [frame .fsm.b -bg $bg ] -fill both -side left -expand 1 -padx 6 -pady 6
+pack [tixScrolledTList .fsm.b.t -options {tlist.browseCmd browse}] -expand 1 -fill both
+
+# Bottom button menu
+pack [frame .fsm.b.bot -padx 5 -pady 5] -fill x -side bottom
+pack [button .fsm.b.bot.bhelp -text "Help" -image i16help -compound left ] -side left -fill both
+pack [button .fsm.b.bot.bquit -text "Quitter" -image i16quit -compound left -command {destroy .fsm}] -side right -fill both
+pack [button .fsm.b.bot.bparam -text "Tous les paramètres" -image i16left -compound left -state disabled ] -side right -fill both -padx 6
+focus .fsm.sb.f1.find
+Sm_Refresh_View
+}
+
+# Form processor
+proc Fprocessor {} {
+if {[winfo exist .ccp]==1} {destroy .ccp} ; # if form exist destroy it
+toplevel .ccp; wm title .ccp "Information about processor..."
+wm geometry .ccp 600x460+500+100
+wm iconphoto .ccp icpu
+# Title
+pack [frame .ccp.ti  -bg #808080] -fill x
+pack [label .ccp.ti.logo -image  [resizeIMG icpu 64]  -bg #808080 -anchor center] -side left 
+pack [label .ccp.ti.title -text "About your processor..."  -anchor center  -bg #808080 -fg #FFFFFF -font "serif 17"] -fill both -expand 1 -side left 
+pack [button .ccp.ti.quit -text "Close" -image iclose -compound right -command {destroy .ccp}] -side left -fill y
+# Body
+pack [frame .ccp.v] -fill both -expand 1 
+pack [text .ccp.v.text] -fill both -expand 1 -side left
+.ccp.v.text insert end [exec "lscpu"]
+}
+
+
+############################# FORM PROCESSOR #####################################
+proc Fmemory {} {
+if {[winfo exist .ccm]==1} {destroy .ccm} ; # if form exist destroy it
+toplevel .ccm; wm title .ccm "Information about RAM Memory..."
+wm geometry .ccm 600x460+500+100
+wm iconphoto .ccm imemory
+# Title
+pack [frame .ccm.ti  -bg #808080] -fill x
+pack [label .ccm.ti.logo -image  [resizeIMG imemory 64]  -bg #808080 -anchor center] -side left 
+pack [label .ccm.ti.title -text "About your RAM memory..."  -anchor center  -bg #808080 -fg #FFFFFF -font "serif 17"] -fill both -expand 1 -side left 
+pack [button .ccm.ti.quit -text "Close" -image iclose -compound right -command {destroy .ccm}] -side left -fill y
+# Body
+pack [label .ccm.text -text [exec "free"]] -fill both -expand 1 -side left
+}
+
+
+########################## FORM DRIVE #########################################
+proc Fdrive {} {
+if {[winfo exist .ccdr]==1} {destroy .ccdr} ; # if form exist destroy it
+toplevel .ccdr; wm title .ccdr "Information about mount drives and partitions..."
+wm geometry .ccdr 400x450+500+100
+wm iconphoto .ccdr idrive
+# Title
+pack [frame .ccdr.ti  -bg #808080] -fill x
+pack [label .ccdr.ti.logo -image  [resizeIMG idrive 64]  -bg #808080 -anchor center] -side left 
+pack [label .ccdr.ti.title -text "Mounted drives \nand partitions"  -anchor center  -bg #808080 -fg #FFFFFF -font "serif 17"] -fill both -expand 1 -side left 
+pack [button .ccdr.ti.quit -text "Close" -image iclose -compound right -command {destroy .ccdr}] -side left -fill y
+# Body
+pack [label .ccdr.text -text [exec "df" "-T"]] -fill both -expand 1 -side left
+}
+
+###################### FORM SOUND DEVICES ####################################
+proc Fsound {} {
+if {[winfo exist .ccsd]==1} {destroy .ccsd} ; # if form exist destroy it
+toplevel .ccsd; wm title .ccsd "Sound devices"
+wm geometry .ccsd 500x250+500+100
+wm iconphoto .ccsd isound
+# Title
+pack [frame .ccsd.ti  -bg #808080] -fill x
+pack [label .ccsd.ti.logo -image  [resizeIMG isound 64]  -bg #808080 -anchor center] -side left 
+pack [label .ccsd.ti.title -text "Sound card \ninfomations"  -anchor center  -bg #808080 -fg #FFFFFF -font "serif 17"] -fill both -expand 1 -side left 
+pack [button .ccsd.ti.quit -text "Close" -image iclose -compound right -command {destroy .ccsd}] -side left -fill y
+# Body
+set a [exec "cat" "/proc/asound/cards"] 
+set b [exec "lspci" "-v" "|" "grep" "-i" "audio"]
+
+pack [label .ccsd.text -bg #FFFFFF -text "
+	Your device is :
+	$a
+	
+	Manufactured by:
+	$b
+	
+	Output channel is :
+	
+	
+"] -fill both -expand 1 -side left
+
+}
+
+####################### FORM BACKGROUND #####################################
+proc Fdesktop {} {
+if {[winfo exist .ccbg]==1} {destroy .ccbg} ; # if form exist destroy it
+toplevel .ccbg; wm title .ccbg "Desktop configuration"
+wm geometry .ccbg 500x500+500+100
+wm iconphoto .ccbg idesktop
+# Title
+pack [frame .ccbg.ti  -bg #808080] -fill x
+pack [label .ccbg.ti.logo -image  [resizeIMG idesktop 64]  -bg #808080 -anchor center] -side left 
+pack [label .ccbg.ti.title -text "Configure desktop"  -anchor center  -bg #808080 -fg #FFFFFF -font "serif 17"] -fill both -expand 1 -side left 
+pack [button .ccbg.ti.quit -text "Close" -image iclose -compound right -command {destroy .ccbg}] -side left -fill y
+# Body
+pack [ttk::notebook .ccbg.n ] -fill both -expand 1
+ttk::frame .ccbg.n.tab0
+.ccbg.n add .ccbg.n.tab0 -text "Color"
+pack [labelframe .ccbg.n.tab0.lf -text "Background color" -padx 7 -pady 7] -fill both -expand 1  -padx 7 -pady 7
+pack [button .ccbg.n.tab0.lf.bcolor -text "color" -command {Choose_Color}] -fill x
+pack [label .ccbg.n.tab0.lf.vcolor -bd 2 -relief solid -bg [Conf_Read "DesktopBg"]]  -padx 7 -pady 7 -fill both  -expand 1
+
+ttk::frame .ccbg.n.tab1
+.ccbg.n add .ccbg.n.tab1 -text "Picture"
+pack [labelframe .ccbg.n.tab1.b -text "Available background" -padx 7 -pady 7] -fill both -expand 1  -padx 7 -pady 7
+pack [listbox .ccbg.n.tab1.b.list -bg #FFFFFF ] -fill y -side left -padx 7 -pady 7
+pack [label .ccbg.n.tab1.b.preview -bg #000000 ] -fill both -side left -padx 7 -pady 7 -expand 1
+
+pack [button .ccbg.bpic -text "Apply" -command Desktop_Change_Bg] -side right -padx 7
+switch [Conf_Read "DesktopType"] { "color" {.ccbg.n select .ccbg.n.tab0} "picture" {.ccbg.n select .ccbg.n.tab1}}
+bind .ccbg.n <<NotebookTabChanged>> {set sel [.ccbg.n select]
+	switch $sel { ".ccbg.n.tab0" {Conf_Edit "DesktopType" "color"} ".ccbg.n.tab1" {Conf_Edit "DesktopType" "picture"}}
+}
+}
+
+proc Choose_Color {} {
+set co [Color_Chooser]
+.ccbg.n.tab0.lf.vcolor configure -bg $co
+Conf_Edit "DesktopBg" $co
+}
+
+# Load list of background
+proc Background_Load_List {} {
+
+}
+
+
+# Modify jwm configuration file and change Desktop background by restarting jmw
+proc Desktop_Change_Bg {} {
+# open jwm file configuration
+set fp [open ${::env(HOME)}/.jwmrc r]; set file_data [read $fp]; close $fp
+set line [split $file_data "\n"]
+
+# Search commentary ligne <!--AAAA-->, one line after it's background
+set c 0; set myid 0
+foreach txt $line {if {$txt == "<!--AAAA-->"} {set myid $c} {incr c} }
+puts [lindex $line [expr $myid +1]]
+
+# what type of background ?  Replace founded line +1 by new background
+set t "<Background type=" ; set b "\x22" ;set cl ">"
+set c "solid" ; set p "image" ; set name [Conf_Read "DesktopPicture"] ; set f "</Background>"
+set col [Conf_Read "DesktopBg"] 
+puts [Conf_Read "DesktopType"]
+switch [Conf_Read "DesktopType"] { 
+	"color" {lset line [expr $myid +1] $t$b$c$b$cl$col$f ; puts [lindex $line [expr $myid +1]] } 
+	"picture" {lset line [expr $myid +1] $t$b$p$b$cl$name$f ; puts [lindex $line [expr $myid +1]] }
+	}
+	
+# Save new file and restart jwm
+set nf [join $line "\n"]
+set newfile [open "$::env(HOME)/.jwmrc" "w"] 
+puts $newfile $nf
+close $newfile
+
+after 150
+exec "jwm" "-restart"
+}
+
+proc Sm_Refresh_View {} {
+global myid
+sqlite3 db1 "./settings.db"
+set sql "SELECT * FROM settings"
+set tlist [.fsm.b.t subwidget tlist]
+$tlist configure -bg white -fg black
+$tlist delete 0 end
+db1 eval $sql {
+	image create photo ipp$id -data $icon
+	lappend myid $id
+	$tlist insert end -itemtype imagetext -image  ipp$id -text $name }
+db1 close
+}
+
+proc browse {t} { 
+global clic
+incr clic
+# When click on icon event return 2 times the same id.
+# This modulos function bellow remove one id :
+if {[expr $clic % 2] == 0} { 
+global myid idcurrent
+set idx [lindex $myid $t] ; puts $idx
+set idcurrent [lindex $myid $t] 
+switch $idx {
+	1 {Form_Aboutme}
+	2 {Form_Xftk_Appearance}
+	4 {Form_Desktop_Config}
+	13 {Form_Panel_Config}
+	14 {exec "/usr/bin/xfce4-terminal" &}
+	27 {exec "synaptic" &}
+	32 {Form_Xftk_About}
+}
+}
+}

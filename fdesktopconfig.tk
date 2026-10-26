@@ -1,0 +1,150 @@
+# Form Desktop manager
+# Made in february 2026 by fabien for the xftk project.
+# More informations on www.tcltk.fr
+
+
+proc Form_Desktop_Config {} { 
+if {[winfo exist ._fdc] eq 1} {destroy ._fdc}
+global fd ft Ddesktop
+toplevel ._fdc
+#wm geometry ._fdc 750x600+200+50
+wm iconphoto ._fdc i44logoscreen
+wm title ._fdc "Bureau"
+pack [frame ._fdc.f0 -bg white] -fill x
+pack [label ._fdc.f0.logo -bg white -image i44logoscreen ] -side left -fill both -padx 7 -pady 7
+pack [frame ._fdc.f0.f1 -bg white] -fill both -expand 1
+pack [label ._fdc.f0.f1.l2 -text "Bureau" -font $ft -bg white -fg black -anchor sw] -fill both -expand 1
+pack [label ._fdc.f0.f1.l3 -text "Définir le fond d'écran, le comportement du menu et des icônes." -font $fd -bg white  -fg black -anchor w] -fill both -expand 1
+pack [frame ._fdc.fb -bg #CFCFCF -padx 8 -pady 8] -fill both -expand 1
+pack [ttk::notebook ._fdc.fb.nb] -fill both -expand 1
+ttk::frame ._fdc.fb.nb.tab1
+._fdc.fb.nb add ._fdc.fb.nb.tab1 -text "Arrière-plan"
+pack [label ._fdc.fb.nb.tab1.msg1 -fg white -bg #9AB87C -font $fd -text "Déplacez cette fenêtre vers l'écran et l'espace de travail dont vous souhaitez modifier les paramètres." -anchor w] -fill x -padx 10 -pady 8
+pack [label ._fdc.fb.nb.tab1.msg2 -text "Fond d'écran pour l'espace de travail 0 sur le moniteur 0" -font $fd -anchor w] -fill x -padx 10 -pady 3
+pack [frame ._fdc.fb.nb.tab1.f3 -bg white] -fill both -expand 1 -padx 5 -pady 5
+pack [frame ._fdc.fb.nb.tab1.f4 ] -fill x -padx 5 -pady 5
+pack [label ._fdc.fb.nb.tab1.f4.l0 -text "Dossier : " -font $fd -anchor w] -side left
+pack [button ._fdc.fb.nb.tab1.f4.b1 -text "Images" -font $fd -command {global Ddesktop ; lset Ddesktop 1 3 ; Drefresh_Background}] -side left -fill x -expand 1
+pack [label ._fdc.fb.nb.tab1.f4.sep2] -side left -fill x -expand 1
+pack [label ._fdc.fb.nb.tab1.f4.l3 -text "Style : "  -font $fd -anchor w] -side left
+pack [menubutton ._fdc.fb.nb.tab1.f4.b4 -text "Aucun "  -menu ._fdc.fb.nb.tab1.f4.b4.m -font $fd -anchor w -relief raised] -side left -fill x -expand 1
+menu ._fdc.fb.nb.tab1.f4.b4.m -tearoff 0
+._fdc.fb.nb.tab1.f4.b4.m add command -label "Aucun"
+._fdc.fb.nb.tab1.f4.b4.m add command -label "Centré"
+._fdc.fb.nb.tab1.f4.b4.m add command -label "Mozaïque"
+._fdc.fb.nb.tab1.f4.b4.m add command -label "Etendu"
+._fdc.fb.nb.tab1.f4.b4.m add command -label "Mis à l'échelle"
+._fdc.fb.nb.tab1.f4.b4.m add command -label "Zommé"
+pack [frame ._fdc.fb.nb.tab1.f5 ] -fill x -padx 5 -pady 5
+pack [label ._fdc.fb.nb.tab1.f5.l0 -text "Couleur : "  -font $fd -anchor w] -side left
+pack [menubutton ._fdc.fb.nb.tab1.f5.mb1 -text "Couleur unie" -menu ._fdc.fb.nb.tab1.f5.mb1.m -font $fd -relief raised] -side left -fill x -expand 1
+menu ._fdc.fb.nb.tab1.f5.mb1.m -tearoff 0
+._fdc.fb.nb.tab1.f5.mb1.m add command -label "Couleur unie" -command {._fdc.fb.nb.tab1.f5.mb1 configure -text "Couleur unie" ; global Ddesktop ; lset Ddesktop 1 0 ; Drefresh_Background}
+._fdc.fb.nb.tab1.f5.mb1.m add command -label "Dégradé horizontal" -command {._fdc.fb.nb.tab1.f5.mb1 configure -text "Dégradé horizontal" ; global Ddesktop ; lset Ddesktop 1 1 ; Drefresh_Background}
+._fdc.fb.nb.tab1.f5.mb1.m add command -label "Dégradé vertical" -command {._fdc.fb.nb.tab1.f5.mb1 configure -text "Dégradé vertical" ; global Ddesktop ; lset Ddesktop 1 2 ; Drefresh_Background}
+._fdc.fb.nb.tab1.f5.mb1.m add command -label "Transparent" -command {._fdc.fb.nb.tab1.f5.mb1 configure -text "Transparent" ; global Ddesktop ; lset Ddesktop 1 3 ; Drefresh_Background}
+pack [button ._fdc.fb.nb.tab1.f5.b2 -bg [lindex $Ddesktop 2] -command {set a [Choose_Color] ; ._fdc.fb.nb.tab1.f5.b2 configure -bg $a ; global Ddesktop ; lset Ddesktop 2 $a ; Drefresh_Background} ] -side left -padx 5 -pady 5
+pack [button ._fdc.fb.nb.tab1.f5.b3 -bg [lindex $Ddesktop 3] -command {set b [Choose_Color] ; ._fdc.fb.nb.tab1.f5.b3 configure -bg $b ; global Ddesktop ; lset Ddesktop 3 $b ; Drefresh_Background} ] -side left -padx 5 -pady 5
+pack [checkbutton ._fdc.fb.nb.tab1.f5.cb4 -text "Appliquer à tous les espaces de travail" -font $fd ] -side left -padx 15 -pady 5
+pack [frame ._fdc.fb.nb.tab1.f6 ] -fill x -padx 5 -pady 5
+pack [checkbutton ._fdc.fb.nb.tab1.f6.cb0 -text "Changer le fond d'écran" -font $fd ] -side left -padx 5 -pady 5
+pack [button ._fdc.fb.nb.tab1.f6.mb1 -text "Couleur unie" -font $fd ] -side left -fill x -expand 1 -padx 10
+pack [entry ._fdc.fb.nb.tab1.f6.e2 -bg white] -side left -fill y
+pack [button ._fdc.fb.nb.tab1.f6.b3 -text "-" -font $fd ] -side left
+pack [button ._fdc.fb.nb.tab1.f6.b4 -text "+" -font $fd ] -side left
+pack [checkbutton ._fdc.fb.nb.tab1.f6.cb5 -text "Ordre aléatoire" -font $fd ] -side left -padx 5 -pady 5
+
+ttk::frame ._fdc.fb.nb.tab2
+._fdc.fb.nb add ._fdc.fb.nb.tab2 -text "Menus"
+pack [label ._fdc.fb.nb.tab2.l0 -text "Menu du bureau" -font $ft -anchor w] -fill x -padx 5 -pady 5
+pack [checkbutton ._fdc.fb.nb.tab2.cb1 -text "Inclure le menu Applications lors d'un clic droit sur le bureau" -font $fd -anchor w] -fill x -padx 5 -pady 5
+pack [checkbutton ._fdc.fb.nb.tab2.cb2 -text "Afficher les icônes des applications dans le menu" -font $fd -anchor w] -fill x -padx 5 -pady 5
+pack [label ._fdc.fb.nb.tab2.sep3 ] -fill x -padx 5 -pady 5
+pack [label ._fdc.fb.nb.tab2.l4 -text "Menu de la liste des fenêtres"  -font $ft -anchor w] -fill x -padx 5 -pady 5
+pack [checkbutton ._fdc.fb.nb.tab2.cb5 -text "Afficher le menu de la liste des fenêtres lors d'un clic milieu sur le bureau"  -font $fd -anchor w] -fill x -padx 5 -pady 5
+pack [checkbutton ._fdc.fb.nb.tab2.cb6 -text "Afficher les icônes des applications dans le menu" -font $fd -anchor w] -fill x -padx 5 -pady 5
+pack [checkbutton ._fdc.fb.nb.tab2.cb7 -text "Afficher les noms des espaces de travail dans la liste" -font $fd -anchor w] -fill x -padx 5 -pady 5
+pack [checkbutton ._fdc.fb.nb.tab2.cb8 -text "Utiliser des sous-menus pour chaque espace de travail" -font $fd -anchor w] -fill x -padx 5 -pady 5
+pack [checkbutton ._fdc.fb.nb.tab2.cb9 -text "Afficher les fenêtres collantes uniquement dans l'espace de travail actif" -font $fd -anchor w] -fill x -padx 5 -pady 5
+pack [checkbutton ._fdc.fb.nb.tab2.cb10 -text "Afficher les options ajouter et supprimer des espaces de travail dans la liste" -font $fd -anchor w] -fill x -padx 5 -pady 5
+
+ttk::frame ._fdc.fb.nb.tab3
+._fdc.fb.nb add ._fdc.fb.nb.tab3 -text "Icônes"
+pack [label ._fdc.fb.nb.tab3.l0 -text "Apparence" -font $ft -anchor w] -fill x -padx 5 -pady 5
+pack [frame ._fdc.fb.nb.tab3.f1 ] -fill x -padx 5 -pady 5
+pack [label ._fdc.fb.nb.tab3.f1.l0 -text "Type d'icône : " -font $fd -anchor w] -side left -fill x -expand 1
+pack [button ._fdc.fb.nb.tab3.f1.b1 -text "Icônes des fichiers / lanceurs" -font $fd ] -side left -fill x -expand 1
+pack [frame ._fdc.fb.nb.tab3.f2 ] -fill x -padx 5 -pady 5
+pack [label ._fdc.fb.nb.tab3.f2.l0 -text "Taille de l'icône : " -font $fd -anchor w] -side left -fill x
+pack [entry ._fdc.fb.nb.tab3.f2.e1 -bg white] -side left -fill y
+pack [button ._fdc.fb.nb.tab3.f2.b3 -text "-" -font $fd ] -side left
+pack [button ._fdc.fb.nb.tab3.f2.b4 -text "+" -font $fd ] -side left
+pack [frame ._fdc.fb.nb.tab3.f3 ] -fill x -padx 5 -pady 5
+pack [label ._fdc.fb.nb.tab3.f3.l0 -text "Orientation des icônes : " -font $fd -anchor w] -side left -fill x -expand 1
+pack [button ._fdc.fb.nb.tab3.f3.b1 -text "En haut à gauche à la verticale" -font $fd ] -side left -fill x -expand 1
+pack [checkbutton ._fdc.fb.nb.tab3.cb4 -text "Afficher les icônes sur l'affichage primaire" -font $fd -anchor w] -fill x -padx 5 -pady 5
+
+
+# Bottom button menu
+pack [frame ._fdc.bot -padx 5 -pady 5] -fill x -side bottom
+pack [button ._fdc.bot.bhelp -text "Aide" -image i16help -compound left] -side left -fill both
+pack [button ._fdc.bot.bcancel -text "Fermer" -image i16quit -compound left -command {destroy ._fdc}] -side right -fill both
+}
+
+# Refresh background
+proc Drefresh_Background {} { 
+	global Ddesktop
+	set whatbg [lindex $Ddesktop 1]
+	.desk delete all
+	if {$whatbg eq 0} {.desk configure -bg [lindex $Ddesktop 2]}
+	if {$whatbg eq 1} {Ddegrade_Horizontal}
+	if {$whatbg eq 2} {Ddegrade_Horizontal}
+	if {$whatbg eq 3} {set f [modernFileDialog [pwd] ; Dpic_normal] ; lset Ddesktop 4 $f ; puts $f}
+}
+
+
+# Interpolte colors
+proc interpolateColor {color1 color2 ratio} {
+    set r1 [expr { [scan $color1 #%x] >> 16 }]
+    set g1 [expr { [scan $color1 #%x] >> 8 & 0xff }]
+    set b1 [expr { [scan $color1 #%x] & 0xff }]
+
+    set r2 [expr { [scan $color2 #%x] >> 16 }]
+    set g2 [expr { [scan $color2 #%x] >> 8 & 0xff }]
+    set b2 [expr { [scan $color2 #%x] & 0xff }]
+
+    set r [expr { int($r1 + ($r2 - $r1) * $ratio) }]
+    set g [expr { int($g1 + ($g2 - $g1) * $ratio) }]
+    set b [expr { int($b1 + ($b2 - $b1) * $ratio) }]
+    format "#%02x%02x%02x" $r $g $b
+}
+
+
+proc Ddegrade_Horizontal {} { 
+global Ddesktop wi he
+set startColor [lindex $Ddesktop 2]
+set endColor [lindex $Ddesktop 3]
+# Draw degrade horizontal
+for {set i 0} {$i <= 100} {incr i 1} {
+    set ratio [expr {$i / 100.0}]
+    set color [interpolateColor $startColor $endColor $ratio]
+    set x1 [expr {0}]
+    set y1 [expr {$he * $ratio}]
+    set x2 [expr {$wi}]
+    set y2 [expr {$he * ($ratio + 1 / 100.0)}]
+    .desk create rectangle $x1 $y1 $x2 $y2 -fill $color -outline ""
+}
+}
+
+# show picture with original size in the center of desktop
+proc Dpic_normal {} { 
+global Ddesktop
+.desk delete all
+puts [lindex $Ddesktop 4]
+set ix [winfo vrootwidth  .] ; set iy [winfo vrootheight  .]
+set x [expr $ix/2] ; set y [expr $iy/2]
+image create photo myimg -file [lindex $Ddesktop 4]
+.desk create image $myimg -anchor center
+}
+
+

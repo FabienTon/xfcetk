@@ -1,0 +1,59 @@
+# Form About me
+# made in february 2026 for the Xftk project a Xfce clone in pure tcltk
+# More information on www.tcltk.fr
+
+
+proc Form_Aboutme {} { 
+if {[winfo exist ._fam] eq 1} {destroy ._fam}
+global ft fd
+toplevel ._fam
+wm title ._fam "A mon sujet..."
+wm geometry ._fam 590x235+100+100
+wm iconphoto ._fam i44me
+# Frame principale
+pack [frame ._fam.b -padx 5 -pady 5] -fill both -expand 1
+# Bouton photo contact à gauche
+pack [button ._fam.b.blogo -image i130person ] -fill both -side left
+# Frame de droite
+pack [frame ._fam.b.d -padx 5 -pady 5] -fill both -expand 1 -side left
+# Frame 1ere ligne
+pack [frame ._fam.b.d.l1] -fill both -expand 1
+puts [font families]
+# Prenom
+pack [frame ._fam.b.d.l1.fpr] -fill both -expand 1 -side left
+pack [label ._fam.b.d.l1.fpr.l0 -text "Prenom" -anchor w -font $fd] -fill x
+pack [entry ._fam.b.d.l1.fpr.eprenom -bg white] -fill x
+# Nom
+pack [frame ._fam.b.d.l1.fn] -fill both -expand 1 -side left
+pack [label ._fam.b.d.l1.fn.l0 -text "Nom" -anchor w -font $fd] -fill x
+pack [entry ._fam.b.d.l1.fn.enom  -bg white] -fill x
+# Initiales
+pack [frame ._fam.b.d.l1.fi] -fill both -expand 1 -side left
+pack [label ._fam.b.d.l1.fi.l0 -text "Initiales" -anchor w -font $fd] -fill x
+pack [entry ._fam.b.d.l1.fi.einitiale  -bg white] -fill x
+# Frame 2eme ligne
+pack [frame ._fam.b.d.l2] -fill both -expand 1
+# Téléphone domicile
+pack [frame ._fam.b.d.l2.fpr] -fill both -expand 1 -side left
+pack [label ._fam.b.d.l2.fpr.l0 -text "Téléphone domicile" -anchor w -font $fd] -fill x
+pack [entry ._fam.b.d.l2.fpr.efixe -bg white] -fill x
+# Courriel
+pack [frame ._fam.b.d.l2.fn] -fill both -expand 1 -side left
+pack [label ._fam.b.d.l2.fn.l0 -text "Courriel" -anchor w -font $fd] -fill x
+pack [entry ._fam.b.d.l2.fn.email -bg white ] -fill x
+# Frame 3eme ligne
+pack [frame ._fam.b.d.l3] -fill both -expand 1
+# Téléphone bureau
+pack [frame ._fam.b.d.l3.fpr] -fill both -expand 1 -side left
+pack [label ._fam.b.d.l3.fpr.l0 -text "Téléphone bureau" -anchor w -font $fd] -fill x
+pack [entry ._fam.b.d.l3.fpr.eoffice -bg white] -fill x
+# Fax
+pack [frame ._fam.b.d.l3.fn] -fill both -expand 1 -side left
+pack [label ._fam.b.d.l3.fn.l0 -text "Fax" -anchor w -font $fd] -fill x
+pack [entry ._fam.b.d.l3.fn.efax -bg white] -fill x
+# Bottom button menu
+pack [frame ._fam.bot -padx 5 -pady 5] -fill x -side bottom
+pack [button ._fam.bot.bhelp -text "Aide" -image i16help -compound left -font $fd] -side left -fill both
+pack [button ._fam.bot.bapply -text "Appliquer" -image i20valid -compound left  -font $fd] -side right -fill both -padx 6
+pack [button ._fam.bot.bcancel -text "Fermer" -image i20cancel  -font $fd -compound left -command {destroy ._fam}] -side right -fill both
+}

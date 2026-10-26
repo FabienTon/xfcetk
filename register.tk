@@ -1,0 +1,28 @@
+# Read and Write register sqlite3 database
+# Made in february 2026 by Fabien
+# More informations on www.tcltk.fr
+
+# Variables definitions
+# Ddesktop configure desktop background
+# 0: Style 0=no wallpaper,1=image center,2=mozaique, 3=scale 4zoomed
+# 1: colortype 0one color, 1horozontal, 2vertical, 3transparent
+# 2: color number 1
+# 3: color number 2
+# 4: wallpapers path
+
+set Ddesktop [list 0 0 #4E94EE #FFFFFF "/home/ordinateur/Images"]
+
+
+
+# read database register and return result(s)
+proc Register_Read {sql} { 
+
+}
+
+# Edit database register (setting.db) with key and value
+proc Register_Edit {k v} { 
+	
+}
+
+
+

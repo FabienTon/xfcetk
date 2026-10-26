@@ -1,0 +1,81 @@
+# Form about xftk
+
+
+
+proc Form_Panel_Config {} { 
+if {[winfo exist ._fpc] eq 1} {destroy ._fpc}
+global ft fd
+toplevel ._fpc
+wm geometry ._fpc 880x640+200+50
+wm iconphoto ._fpc i44panel
+wm title ._fpc "Préférences du tableau de bord"
+pack [frame ._fpc.f0 -bg white] -fill x
+pack [label ._fpc.f0.logo -bg white -image i44panel] -side left -fill both -padx 7 -pady 5
+pack [frame ._fpc.f0.f1 -bg white] -fill both -expand 1
+pack [label ._fpc.f0.f1.l2 -text "Préférences du tableau de bord" -font $ft -bg white -fg black -anchor w] -fill both -expand 1
+# profil frame
+pack [frame ._fpc.f1 -padx 5 -pady 5] -fill x
+pack [label ._fpc.f1.l0 -text "Profils :" -padx 5 -pady 5 -anchor w -font $fd] -side left -fill x -expand 1
+pack [button ._fpc.f1.bprofil -text "Sauvegarde et restauration" -font $fd -padx 5 -pady 5] -fill x -side left  -expand 1
+# separation line
+pack [frame ._fpc.f2 -padx 5 -bd 1 -height 2] -fill x
+# Panel frame
+pack [frame ._fpc.f3 -padx 5 ] -fill x
+pack [button ._fpc.f3.bname -text "Tableau de bord 1" -font $fd -padx 5 -pady 5] -fill x -side left  -expand 1
+pack [button ._fpc.f3.badd -text "+" -padx 5 -pady 5] -side left
+pack [button ._fpc.f3.bdel -text "x" -padx 5 -pady 5] -side left
+# Main notebook in body
+pack [frame ._fpc.fb -bg #CFCFCF -padx 5 -pady 5] -fill both -expand 1
+pack [ttk::notebook ._fpc.fb.nb] -fill both -expand 1
+ttk::frame ._fpc.fb.nb.tab1
+._fpc.fb.nb add ._fpc.fb.nb.tab1 -text "Affichage"
+pack [label ._fpc.fb.nb.tab1.l0 -text "Général" -padx 5 -pady 5 -anchor w -font $ft] -fill x
+# frame mode
+pack [frame ._fpc.fb.nb.tab1.f1 -padx 5 -pady 5] -fill x
+pack [label ._fpc.fb.nb.tab1.f1.l0 -text "Mode :" -padx 5 -pady 5 -anchor w -font $fd] -side left -fill both
+pack [button ._fpc.fb.nb.tab1.f1.bmode -text "Horizontal" -font $fd -padx 5 -pady 5] -fill both -side left  -expand 1
+# frame sortie
+pack [frame ._fpc.fb.nb.tab1.f2 -padx 5 -pady 5] -fill x
+pack [label ._fpc.fb.nb.tab1.f2.l0 -text "Sortie :" -padx 5 -pady 5 -anchor w -font $fd] -side left -fill both
+pack [button ._fpc.fb.nb.tab1.f2.bout -text "Automatique" -font $fd -padx 5 -pady 5] -fill both -side left  -expand 1
+
+pack [checkbutton ._fpc.fb.nb.tab1.cb3 -text "Etendre à tous les moniteurs" -padx 5 -pady 5 -anchor w -font $fd] -fill x
+pack [checkbutton ._fpc.fb.nb.tab1.cb4 -text "Vérrouiller le tableau de bord"  -padx 5 -pady 5 -anchor w -font $fd] -fill x
+# frame hide 
+pack [frame ._fpc.fb.nb.tab1.f5 -padx 5 -pady 5] -fill x
+pack [label ._fpc.fb.nb.tab1.f5.l0 -text "Masquer automatiquement le tableau de bord :" -padx 5 -pady 5 -anchor w -font $fd] -side left -fill both
+pack [button ._fpc.fb.nb.tab1.f5.bhide -text "Jamais" -font $fd -padx 5 -pady 5] -fill both -side left  -expand 1
+
+pack [checkbutton ._fpc.fb.nb.tab1.cb6 -text "Ne pas réserver d'espaces sur les bords"  -padx 5 -pady 5  -anchor w -font $fd] -fill x
+
+pack [label ._fpc.fb.nb.tab1.l7 -text "Mesures" -padx 5 -pady 10 -anchor w -font $ft] -fill x
+# frame size line pixel
+pack [frame ._fpc.fb.nb.tab1.f8 -padx 5 -pady 5] -fill x
+pack [label ._fpc.fb.nb.tab1.f8.l0 -text "Taille d'une ligne (pixels) :" -padx 5 -pady 5 -anchor w -font $fd] -side left -fill both
+pack [scale ._fpc.fb.nb.tab1.f8.sc1 -orient h -from 10 -to 128 -variable size -showvalue 0] -fill both -side left  -expand 1  -padx 5 -pady 5 
+pack [label ._fpc.fb.nb.tab1.f8.l2 -padx 5 -pady 5 -anchor w -font $fd -textvariable size] -side right -fill y
+# frame sline number
+pack [frame ._fpc.fb.nb.tab1.f9 -padx 5 -pady 5] -fill x
+pack [label ._fpc.fb.nb.tab1.f9.l0 -text "Nombre de lignes :" -padx 5 -pady 5 -anchor w -font $fd] -side left -fill both
+pack [scale ._fpc.fb.nb.tab1.f9.sc1 -orient h -from 1 -to 5 -variable line -showvalue 0] -fill both -side left  -expand 1  -padx 5 -pady 5 
+pack [label ._fpc.fb.nb.tab1.f9.l2 -padx 5 -pady 5 -anchor w -font $fd -textvariable line] -side right -fill y
+# frame large
+pack [frame ._fpc.fb.nb.tab1.f10 -padx 5 -pady 5] -fill x
+pack [label ._fpc.fb.nb.tab1.f10.l0 -text "Largeur % :" -padx 5 -pady 5 -anchor w -font $fd] -side left -fill both
+pack [scale ._fpc.fb.nb.tab1.f10.sc1 -orient h -from 1 -to 100 -variable large -showvalue 0] -fill both -side left  -expand 1  -padx 5 -pady 5 
+pack [label ._fpc.fb.nb.tab1.f10.l2 -padx 5 -pady 5 -anchor w -font $fd -textvariable large] -side right -fill y
+
+pack [checkbutton ._fpc.fb.nb.tab1.cb11 -text "Augmenter automatiquement la largeur"  -padx 5 -pady 5  -anchor w -font $fd] -fill x
+
+
+ttk::frame ._fpc.fb.nb.tab2
+._fpc.fb.nb add ._fpc.fb.nb.tab2 -text "Apparence"
+
+ttk::frame ._fpc.fb.nb.tab3
+._fpc.fb.nb add ._fpc.fb.nb.tab3 -text "Eléments"
+
+# Bottom button menu
+pack [frame ._fpc.bot -padx 5 -pady 5] -fill x -side bottom
+pack [button ._fpc.bot.bhelp -text "Aide" -font $fd -image i16help -compound left] -side left -fill both
+pack [button ._fpc.bot.bcancel -text "Fermer" -font $fd -image i16quit -compound left -command {destroy ._fpc}] -side right -fill both
+}

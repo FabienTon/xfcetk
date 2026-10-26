@@ -1,0 +1,255 @@
+# Files and folders explorer like Thunar
+# xftk-explorer is an application from the Xftk project.
+# Made in fébruary 2026 by Fabien.
+# More informations www.tcltk.fr
+
+
+# Form files or folder properties n=visible name f=file/folder absolute path
+proc Form_File_Properties {na p} { 
+global wcount fd ft
+set n $wcount
+set pe [list "Aucun" "Ecriture seule" "Lecture seule" "Lecture et écriture"]
+set r [file isfile $p] ; # check if file or folder 0folder 1file
+toplevel .fpr$n
+wm title .fpr$n "$na - Propriétés"
+wm geometry .fpr$n 500x570+100+100
+pack [frame .fpr$n.b -bg #CFCFCF] -fill both -expand 1
+pack [ttk::notebook .fpr$n.b.nb] -fill both -expand 1 -padx 7 -pady 7
+ttk::frame .fpr$n.b.nb.tab0
+.fpr$n.b.nb add .fpr$n.b.nb.tab0 -text "Général"
+# name
+pack [frame .fpr$n.b.nb.tab0.f0 -padx 5 -pady 5] -fill x
+pack [label .fpr$n.b.nb.tab0.f0.icon -padx 5 -pady 5 -image i46folder] -side left -fill both
+pack [label .fpr$n.b.nb.tab0.f0.l0 -font $ft -text "Nom :" -anchor e] -side left
+pack [entry .fpr$n.b.nb.tab0.f0.ename -bg white] -side left -fill x -expand 1
+.fpr$n.b.nb.tab0.f0.ename delete 0 end
+.fpr$n.b.nb.tab0.f0.ename insert end $na
+# type
+pack [frame .fpr$n.b.nb.tab0.f1 -padx 5 -pady 5] -fill x
+pack [label .fpr$n.b.nb.tab0.f1.l0 -font $ft -text "Type :" -anchor e] -side left
+pack [label .fpr$n.b.nb.tab0.f1.ltype -font $fd -text "Dossiertempo" -anchor w] -side left
+
+# if file -> open with
+if {$r eq 1} {
+pack [frame .fpr$n.b.nb.tab0.f2 -padx 5 -pady 5] -fill x
+pack [label .fpr$n.b.nb.tab0.f2.l0 -font $ft -text "Ouvrir avec :" -anchor e] -side left
+pack [button .fpr$n.b.nb.tab0.f2.ltype -font $fd -text "boutontempo" -anchor w] -side left	
+}
+# Place
+pack [frame .fpr$n.b.nb.tab0.f3 -padx 5 -pady 5] -fill x
+pack [label .fpr$n.b.nb.tab0.f3.l0 -font $ft -text "Emplacement :" -anchor e] -side left
+pack [label .fpr$n.b.nb.tab0.f3.ltype -font $fd -text $p -anchor w] -side left
+# Modified
+pack [frame .fpr$n.b.nb.tab0.f4 -padx 5 -pady 5] -fill x
+pack [label .fpr$n.b.nb.tab0.f4.l0 -font $ft -text "Modifié :" -anchor e] -side left
+pack [label .fpr$n.b.nb.tab0.f4.ltype -font $fd -text  "date modiftempo" -anchor w] -side left
+# access
+pack [frame .fpr$n.b.nb.tab0.f5 -padx 5 -pady 5] -fill x
+pack [label .fpr$n.b.nb.tab0.f5.l0 -font $ft -text "Accédé :" -anchor e] -side left
+pack [label .fpr$n.b.nb.tab0.f5.ltype -font $fd -text "Date accès tempo" -anchor w] -side left
+# Size
+pack [frame .fpr$n.b.nb.tab0.f6 -padx 5 -pady 5] -fill x
+pack [label .fpr$n.b.nb.tab0.f6.l0 -font $ft -text "Taille :" -anchor e] -side left
+pack [label .fpr$n.b.nb.tab0.f6.ltype -font $fd -text "Taille tempo" -anchor w] -side left
+# if folder -> place on disk
+if {$r eq 0} {
+pack [frame .fpr$n.b.nb.tab0.f7 -padx 5 -pady 5] -fill x
+pack [label .fpr$n.b.nb.tab0.f7.l0 -font $ft -text "Utilisation :" -anchor e] -side left
+pack [label .fpr$n.b.nb.tab0.f7.ltype -font $fd -text "placesurdique tempo" -anchor w] -side left
+pack [tixMeter .fpr$n.b.nb.tab0.pb8 -value 0.6 -fillcolor blue] -fill x -padx 5 -pady 5
+}
+
+# Tab emblem
+ttk::frame .fpr$n.b.nb.tab1
+.fpr$n.b.nb add .fpr$n.b.nb.tab1 -text "Emblèmes"
+
+#Tab Permissions
+ttk::frame .fpr$n.b.nb.tab2
+.fpr$n.b.nb add .fpr$n.b.nb.tab2 -text "Permissions"
+# owner
+pack [frame .fpr$n.b.nb.tab2.f0 -padx 5 -pady 5] -fill x
+pack [label .fpr$n.b.nb.tab2.f0.l0 -font $ft -text "Propriétaire :" -anchor e] -side left
+pack [label .fpr$n.b.nb.tab2.f0.l1 -font $fd -text $::env(USER) -anchor w] -side left -fill both -expand 1
+
+pack [frame .fpr$n.b.nb.tab2.f1 -padx 5 -pady 5] -fill x
+pack [label .fpr$n.b.nb.tab2.f1.l0 -font $ft -text "Accès :" -anchor e] -side left
+pack [menubutton .fpr$n.b.nb.tab2.f1.b1 -font $fd -text "Lecture & écriture" -anchor w -menu .fpr$n.b.nb.tab2.f1.b1.m -relief raised] -side left -fill both -expand 1	
+menu .fpr$n.b.nb.tab2.f1.b1.m -tearoff 0
+set idx 0
+foreach i $pe {.fpr$n.b.nb.tab2.f1.b1.m add command -label [lindex $pe $idx] -command [list Ex_Permission_Change "file" "root" [lindex $pe $idx] .fpr$n.b.nb.tab2.f1.b1] ;puts $idx ; incr idx}
+
+pack [frame .fpr$n.b.nb.tab2.f2 -padx 5 -pady 5] -fill x
+pack [label .fpr$n.b.nb.tab2.f2.l0 -font $ft -text "Groupe :" -anchor e] -side left
+pack [button .fpr$n.b.nb.tab2.f2.b1 -font $fd -text $::env(USER) -anchor w] -side left -fill both -expand 1	
+
+pack [frame .fpr$n.b.nb.tab2.f3 -padx 5 -pady 5] -fill x
+pack [label .fpr$n.b.nb.tab2.f3.l0 -font $ft -text "Accès :" -anchor e] -side left
+pack [menubutton .fpr$n.b.nb.tab2.f3.b1 -font $fd -text "Lecture & écriture" -anchor w -menu .fpr$n.b.nb.tab2.f3.b1.m -relief raised] -side left -fill both -expand 1
+.fpr$n.b.nb.tab2.f3.b1.m add command -label "Aucun" -command [list Ex_Permission_Change "file" "root" 0 .fpr$n.b.nb.tab2.f3.b1]
+.fpr$n.b.nb.tab2.f3.b1.m add command -label "Ecriture seule" -command [list Ex_Permission_Change "file" "root" 1 .fpr$n.b.nb.tab2.f3.b1]
+.fpr$n.b.nb.tab2.f3.b1.m add command -label "Lecture seule" -command [list Ex_Permission_Change "file" "root" 2 .fpr$n.b.nb.tab2.f3.b1]
+.fpr$n.b.nb.tab2.f3.b1.m add command -label "Lecture & écriture" -command [list Ex_Permission_Change "file" "root" 3 .fpr$n.b.nb.tab2.f3.b1]	
+
+pack [frame .fpr$n.b.nb.tab2.f4 -padx 5 -pady 5] -fill x
+pack [label .fpr$n.b.nb.tab2.f4.l0 -font $ft -text "Autres :" -anchor e] -side left
+pack [menubutton .fpr$n.b.nb.tab2.f4.b1 -font $fd -text "Lecture seule" -anchor w -menu .fpr$n.b.nb.tab2.f4.b1.m -relief raised] -side left -fill both -expand 1
+.fpr$n.b.nb.tab2.f4.b1.m add command -label "Aucun" -command [list Ex_Permission_Change "file" "root" 0 .fpr$n.b.nb.tab2.f4.b1]
+.fpr$n.b.nb.tab2.f4.b1.m add command -label "Ecriture seule" -command [list Ex_Permission_Change "file" "root" 1 .fpr$n.b.nb.tab2.f4.b1]
+.fpr$n.b.nb.tab2.f4.b1.m add command -label "Lecture seule" -command [list Ex_Permission_Change "file" "root" 2 .fpr$n.b.nb.tab2.f4.b1]
+.fpr$n.b.nb.tab2.f4.b1.m add command -label "Lecture & écriture" -command [list Ex_Permission_Change "file" "root" 3 .fpr$n.b.nb.tab2.f4.b1]
+
+
+# If picture -> Tab image
+if {$r eq 1} {
+ttk::frame .fpr$n.b.nb.tab3
+.fpr$n.b.nb add .fpr$n.b.nb.tab3 -text "Image"		
+}
+
+# Bottom button menu
+pack [frame .fpr$n.bot -padx 5 -pady 5] -fill x -side bottom
+pack [button .fpr$n.bot.bhelp -text "Aide" -image i16help -compound left -font $fd] -side left -fill both
+pack [button .fpr$n.bot.bcancel -text "Fermer" -image i16quit  -font $fd -compound left -command [list destroy .fpr$n]] -side right -fill both
+}
+
+
+# Change permission of file f=file, u=user, v=new value of permission, w=widget to modify text
+proc Ex_Permission_Change {f u v w} { 
+	switch $v {
+	0 {$w configure -text "Aucun"}
+	1 {$w configure -text "Ecriture seule"}
+	2 {$w configure -text "Lecture seule"}
+	3 {$w configure -text "Lecture & écriture"}	
+	}
+}
+
+
+# Form Explorer na=name p=path
+proc Form_Explorer {na p} { 
+global wcount fd ft
+set n $wcount
+toplevel .fex$n
+Ex_Refresh_Title .fex$n "$na - Gestionnaire de fichiers"
+wm geometry .fex$n 500x570+100+100
+Ex_Menu .fex$n
+pack [frame .fex$n.b -bg #CFCFCF] -fill both -expand 1
+Ex_Navbar .fex$n.b
+Ex_Bookmark .fex$n.b
+# Right frame icons
+pack [frame .fex$n.b.r -bg white -padx 5 -pady 5] -fill both -side left -expand 1
+pack [tixScrolledTList .fex$n.b.r.t -options {tlist.browseCmd browse}] -expand 1 -fill both
+Ex_Refresh_View .fex$n.b $p $na
+}
+
+# Add menu in explorer c= widget container f=current form
+proc Ex_Menu {c} { 
+global Bname
+menu $c.m
+$c configure -menu $c.m
+menu $c.m.f -tearoff 0
+$c.m add cascade -menu $c.m.f -label "Fichier"
+$c.m.f add command -label "Nouvel onglet"
+$c.m.f add command -label "Nouvelle fenêtre"
+$c.m.f add separator
+$c.m.f add command -label "Créer un dossier"
+$c.m.f add command -label "Créer un document"
+$c.m.f add separator
+$c.m.f add command -label "Exécuter"
+$c.m.f add separator
+$c.m.f add command -label "Ouvrir dans un terminal"
+$c.m.f add command -label "Ouvrir en tant qu'utilisateur root"
+$c.m.f add command -label "Créer un lien"
+$c.m.f add command -label "Chercher"
+$c.m.f add separator
+$c.m.f add command -label "Propriétés"
+$c.m.f add separator
+$c.m.f add command -label "Fermer toutes les fenêtres"
+$c.m.f add command -label "Fermer l'onglet"
+$c.m.f add command -label "Fermer la fenêtres" -command [list destroy $c]
+
+menu $c.m.e -tearoff 0
+$c.m add cascade -menu $c.m.e -label "Edition"
+$c.m.e add command -label "Exit" 
+menu $c.m.a -tearoff 0
+$c.m add cascade -menu $c.m.a -label "Affichage"
+$c.m.a add command -label "Exit" 
+menu $c.m.g -tearoff 0
+$c.m add cascade -menu $c.m.g -label "Aller"
+$c.m.g add command -label "Dossier parent" 
+$c.m.g add command -label "Précédent" 
+$c.m.g add command -label "Suivant" 
+$c.m.g add separator
+foreach i $Bname {$c.m.g add command -label $i}
+$c.m.g add separator
+$c.m.g add command -label "Ouvrir l'emplacement..." -command {focus}
+ 
+menu $c.m.h -tearoff 0
+$c.m add cascade -menu $c.m.h -label "Aide"
+$c.m.h add command -label "Guide d'utilisation" 
+$c.m.h add command -label "A propos" 
+}
+
+# Add list of bookmarks in explorer cbook= bookmarks container clist=tix icon container
+proc Ex_Bookmark {w} { 
+global ft fd Bname Ebg
+pack [frame $w.l -bg white ] -fill y -side left
+pack [label $w.l.l0 -text "PERIPHERIQUES" -font $ft -bg $Ebg -anchor w] -fill x
+pack [button $w.l.l1 -text "Système de fichiers" -font $fd  -bg $Ebg -anchor w -image i24drive -compound left -command [list Ex_Refresh_View $w "/" "Système de fichiers"] -relief flat] -fill x
+pack [label $w.l.l2 -text "EMPLACEMENTS" -font $ft -bg $Ebg -anchor w] -fill x
+pack [button  $w.l.l3 -text $::env(USER) -font $fd  -bg $Ebg -anchor w -image i24home -compound left -command [list Ex_Refresh_View $w $::env(HOME) $::env(USER)] -relief flat] -fill x
+set id 3
+foreach l $Bname { set id [incr id] ; pack [button $w.l.l$id -text $l -font $fd -bg $Ebg -anchor w  -image i24folder -compound left -relief flat] -fill x}
+pack [label $w.l.l1000 -text "RESEAU" -font $ft -bg $Ebg -anchor w] -fill x
+pack [button $w.l.l1001 -text "Parcourir le réseau" -font $fd -bg $Ebg -anchor w -image i24network -compound left -relief flat] -fill x
+}
+
+# Add navigation bar in explorer w= main Form container
+proc Ex_Navbar {w} { 
+pack [frame $w.nav -bg #CFCFCF -padx 5 -pady 5] -fill x
+pack [button $w.nav.b0 -image i25left -relief flat ] -side left -fill both
+pack [button $w.nav.b1 -image i25right -relief flat ] -side left -fill both
+pack [button $w.nav.b2 -image i25up -relief flat ] -side left -fill both
+pack [button $w.nav.b3 -image i25home -relief flat -command [list Ex_Refresh_View $w $::env(HOME)]] -side left -fill both
+pack [entry $w.nav.e4 -bg white ] -side left -fill both -expand 1
+}
+
+# Refresh Explorer View f=form container p=absolute path
+proc Ex_Refresh_View {w p na} { 
+set tlist [$w.r.t subwidget tlist]
+$tlist configure -bg white -fg black
+$tlist delete 0 end
+set allfiles [glob -nocomplain -directory $p *]
+if {$allfiles != ""} {
+ set a 0 ; # counter of items in path folder
+foreach f $allfiles {
+	if {[file isdirectory $f]==1} {lappend ldir [separatename $f]} {lappend lfile [separatename $f]}
+	incr a
+}
+set ldir [lsort -dictionary $ldir]
+set lfile [lsort -dictionary $lfile]
+foreach g $ldir {$tlist insert end -itemtype imagetext -image  i46folder -text $g}
+foreach h $lfile {$tlist insert end -itemtype imagetext -image  i46generic -text $h}
+}
+Ex_Refresh_Navbar $w $p
+puts "lalalal $na"
+Ex_Refresh_Title $w $na
+}
+
+# Extract name from full path 
+proc separatename {fullpath} {
+set a [split $fullpath "/"]
+return [lindex $a [expr [llength $a]-1]]
+} 
+
+# Refresh navigation bar w main form p=absolute path
+proc Ex_Refresh_Navbar {w p} { 
+$w.nav.e4 delete 0 end
+$w.nav.e4 insert end $p
+}
+
+# Refresh form title
+proc Ex_Refresh_Title {w na} { 
+puts "letitre est $w"
+set m [split $w "."]
+set myw ".[lindex $m 1]"
+wm title $myw $na
+}

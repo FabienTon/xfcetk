@@ -1,0 +1,208 @@
+package require Tk
+
+image create photo i22download -data {iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAABHNCSVQICAgIfAhkiAAAAphJREFUOE+1lE1rE0EYx/87+5Y0QSvmIAhaBF/AgxQVLanWRunRg/Ui2KtfQOlnyLfwEHoUg+hFsSa1sWC9xINiiihiadVqmsbafZusz8x2behmN3pwYNjdeZ75zbP/+c8A/6kpXVwtYQ1OMT8hHgmF4JMUyUSiOwMWvb5OiMeGznc6HT+uFQqFCZrJYmf3CIjfP0FdJbDHOY/Ioaoq2u12h3JGesyPG2oJKUbW1tYq9DQcx4kkGoYRGes3kM/nC6LCU+VymXme1y//r+KikNXV1dMC/P3sxCGNsX+SMHGR7N70NwHeXPrykm/ZLdXv4yincRQdr9uhO3ymkpbHGsikBrHR3FiXm+V5NnWHsMlW9TnD1NRNKEoUXiqVJEN0Dg8BmLtwOy7Ibom/GIq1ez80LTCTKzjURQvBiqy4D1j4IyknqNgFqaIIsOK6tJLXv+I444WLueQslweW3dY40CapmlAjkbM7L/wONf4jhajWoap73TMDv44jvTUkuarGQCcUdELDdeRTbKamqdjzdVx+375z4Na2xg5p3Bv8U29gwDuIc2cuYOjwkKy2F3hy8jqWl5dRW6ji0cPyfQl26SjH283Bij6LxVcaTMNELpeLgAWj2WwSdA7rmUW8bbz5IcC6ZTmwbDvBxzY+4jHYgorxS1eQTqelJKKJE0uXFOaeP8Mn/hQaSeozmBrdXoZtWbATwYCNFbxnT4CqgvGxyxB3gpBFOKpSncUHq4IW/4wsGwTzmS4rThv7eCa1P3C5rCO+Nfk7zL8wcHF0TG7afI1+H0tIZRWkcERO5D5MhSq+Su+5eBQi53d6evrG8PDwKM1R6vV6rVgsznTNF/mbGu3wgwRoz5BpmndJ13skhaLr+jViBIJ3Zf8GY39UOwncstkAAAAASUVORK5CYII=}
+image create photo i22doc -data {iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAABHNCSVQICAgIfAhkiAAAAgxJREFUOE+1lb9P20AUx9/ZsXFCKoIQYxAjSodKpUiAmTIwwMCAmPmx8Eew9G+oWjr0L+iWv6AURrZ2JdmDCAJsAfb5nc07J6GRzncJQ086JXrv7nNff987G+A/DTbCLRnOEJTLDHklNQS/p8y0kv0XiOjvX0Nem1pN0zTTjWazuUk7Le3ugoR8/CWaNoFRCKHYYds2hGGY0pq1gv260IO0Yq3X6/2mX5dzrix0XVeJjQv4vt+UCj+0Wi0LEcetnygvhXS73WUJvl3ZXChZ1pssNB5SnSnfSPDj1fWleI4f7MzQUQvpFrDMVoBUcCprCgF0ILDaUJ56B8FdcJ8XCzGmyQmrb1UJ+LSyrIDPzn6B729Au12F6tMi3LM/IAChDxYJJGkC+emagam8I+oIggBqtRo0Gg3odDrA7j7C9tbO4hDMcsUGsMgQqCUVchgGeaxSqUC9Xoc4juBw/+BEglmSkGIco5gerwgs+/z09Cs4jgOe5w1meX7gMe97bFCM5FwReHd3T3mKi4vzLAdLtZxUm94zyIoVK1QKoHgtHiePzWBhTQ4WQ3BCV3lcu6FVbEWhYhR5uzlRxCGKY2MfC++NiqmqbhxF1CZmMJbQ2I6jyoceO2V3Vkx7c3khdUPwya0QAyvCz0c/j3VAiudfmW/f139Qu41+yrRbpOKJFvbBX0K6mVUtbSTBLPb4AnRgIg3FU9D4AAAAAElFTkSuQmCC}
+image create photo i22bin -data {iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAABHNCSVQICAgIfAhkiAAAAypJREFUOE+NlU1T01AUhk++QKgUagoUcYABhoWsdOtGXarbjuKM/4HhF7B30//g0pUzsNNxXLgUWOHHTOuGYkVpkxRoQpIb33PTUEjq0DuTyeX23Oe+5z3nBoX6jHK5rJVKd54oCj1TVe0RQkwhxBiHqqraxutYiPBjFNGWaY5vb25uijRGSS9sbGzcw/a3AE7m8+NjZrGoFAq3yDSLMvT4+C+1mk1qto4j23baYeAfRZFSrlRe711mqWmwqhrbUSSWcjdz+aHhYQWqKAhCcl1PPjzHEhnGkJLLjeQRu6zr6laao6cXVlfvztRqVWo0GpTPT1AYcpYKWyBDHcch27bJslqYWzQ1WaTFxaXZNCcDLhQmaG3tJdXrdfr2/QdZLYsc2yK305F7z889EiKg+bk5Wll5TNOlEn3d309zKQN2nDYd/WmRWZyip8vLlBu9QZqmyYeH7wfkei5Ut+mg3qCd3X06d+3rwWEYkogEVatVWliYByRHGmzQNZXgJzntU0BPyLIdqtV+0kTBhF1hBpwpHtoIqQrquK58g0a7OzsXG/d2ufhcPiLP8/BzhLgBwHx64CMQe0MRyeKdnZ1KAHeI68JrvHnOk6gbk5acUcztFLAdvCEIABek6VwKBkekYy7kIfHDtg1kRRgChkcAxAfwXEfh+CCGabrWhXKEItcHsiKASnkJuimGgSBFTWBQrOkACwnElZeZDKSYC8Yeszp5CFSz4iR1tas+LmzstZynRqaPfd8HDFZIxbAC6mPFSB0FSxTzQYq8jf0VZ8Cski8BF0gWD3C+HInHiWIG8zXn90BWxMWLPQ7QaqxehZkXVnRhnLki16lv8f6j2O95DCtYWeKjYfS2xB+m/or7gNHH8tMY9yenyekng/s4GbEVuEjyC3h1ZC4IehJ3QkBlL/3LMF03roC5h9F+wbVgOPfBajW85PvLGwyjB7t6iE5Ws+FByPs0OGOF57nPUbB3J237/nTp9mgUzajDQ8ULjzkb227R4eEv0fh9eCaC8IthaC/S4Mz/vCRgfX39AVS/wvMQsFl4PcK/ofU6WDsIhPiE095UKpXPaSj//Q+w2Trx+I0JBAAAAABJRU5ErkJggg==}
+image create photo i22desktop -data {iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAABHNCSVQICAgIfAhkiAAAAmVJREFUOE/VlL9uE0EQxmf31vwJAYfQIUqw4HEsSzxAKsIb8BJ0SG6gpnNDTUlFQW+UAlkBZEWOC0fJ3e0e3zezd2cpFClcwK3Xe7e++80338xZ5H873HQ6fTcYDI5TSm4X4r33TVmW07BarY7H47EbDoe74Mp6vXaz2exVWCwWqhQbOwETQqabTCbNzohboDAajeTBi19y8vObOO+l8EGKohDvMLEW2POe115cN0UcBj8CWQ1H00hqkjx59FxOv96VUNe17B/clv3LOxIKQg1sAXBOKKatLRxY19e6hTYpyeHhfflRX0qoqkpiqjtlBHRQBuF1XlFxzcR56iXYJLfglKJukamKmyZaum3aWSGhXRaqPGDSGirP4GwB2lWSWuWETAVHgOkffWwf7NM3G8yi3hr1mxZncITaGC2DDpwUbL5xtULxug3U+2y2UDksAUeV0gIeCMLRg/GDJtaml881GEcXzDqEXVMUAwhwUBmlxv0+K0eoLStQPA2o338/rv2m6qzV7Am7owarU1zHUm96/PCpFCF3gvYzz3P74ZzpB1qghTSPE5VmO36fn2iHbYHZGUn9+fD2k6bIB0GwgmKlody3l4QaaV4+AH/95mWGlltWQDHfGlaYye3t3ctQKySIghBdgY1pncwnLjYbqSOUYkq66sFlfQWcVVeVY1rjeO6KT1gd9zAa/KIf19WEVii4rnA3iokW9jFV680ZhfJ910WnlaX/D2A22rMcCHxtah9HWZ5uEDCeh6qMR98/33rfRHdw8SzIcu5kKZvOvpuefPm4kvn8DH9cct4kd3TT5/6d+/4Av/F1Ua/aqusAAAAASUVORK5CYII=}
+image create photo i22music -data {iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAABHNCSVQICAgIfAhkiAAAAtVJREFUOE+1VUtvUkEYPRcoxaIUIvQVQ0NpfcQQFkRj00WVRZN24cqdS/+H0b+iG5u4IC40cdPGlcEYmyYNoYSmpbTSQh9Q7uUy94HfDL32wdOFk0zu5fvmO3PumfMNwH8a0iVcR5c9DMo1uuRbUhbwQ8q4W7IXAZVe17vkO6aemKbZ6DTi8fgCVdo6VrdJ8M+/T9NOwLphGC1y2O12nJ2dmbRmtk19p1CZSzFbKpVW6elkjLUsdDqdLbFegbm5uThnGE0kEjZd13ut7yvPiRQKhRgHPnq0EHTYbP8kIWqKisJ+CQc0f+8VsZPdE7+PS6cIhUMvOLCcOUgatXrZ3ujDUd+/bGNtdRcmqe71eeB238KQawg2mx0+jx8OaRD5fP6xOCxdr9NkBNvbqj++bmN+/ik0TYOiKJBlmQ63Cjr4y1JJTWBDg2ZqILt11ZGnyZTgTkmn03/XkqPERvwZCARE3AKWBOM+gHkRXycrxJLIMMYBG/D6XTjZlxGNRrG5uSmAJb6bpvfH2AIun1bw7GUQ3lEXbnoHBMv3rzcgSc1mPteYNTXuhzHJYX3ZWHiQ8xe114cA5mwZse51z1j7WsC87vq4ythgpHH/wBZYswYoFzXsrCtX9mgyplbuZTe1aiK3zi+5Cyk0jaG4zbD2uYqRwDhmZsZ514k1HHhAVRnUer2jj6tHJn59qiHgH8P09DgqlYooVmt1bKwomArNYHFxkTcGUqkUTzUc5ElnXVVR7wKcWtERDt3F0tIStra2kMlkmsBUI5d1DN8bFqB0C0IlLGq0Y8H4htNnuF23hSzthnySRuBBQBTzbuP2HPI4MTo8Bd/IDnK5HPmZoVqtIr+/i6Pj4rJEjJ8TmL8d4HlMikQibyYnJ+9MTEwIVtlslpGWHwjwm8fj8QeDwVeEEyS3ULjw8fDw8Ofl/7yO2LFYLEy33zK1bITslKf3t8lk8l3HAkr8AaIlnZUeKoQsAAAAAElFTkSuQmCC}
+image create photo i22video -data {iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAABHNCSVQICAgIfAhkiAAAAnBJREFUOE+1VDtvE0EQnvM5p4AR75oaCSKK2FKidC7S+FHZBXKFG9yGxg8JgfIXsCiMKOzKSMh2R0trZFkWbZQKCiOMImMc7vb29phZvyJu90LDnkZ3mse3330zuwD/aRkXcKMhe3gY80PigdAK+AFGYoHoxmHj5+eQuDa0J4TwdSuZTB5iZURbrQjQ799HMxGYe54XkMM0TZjNZgJz9hX1OteUpNifTCYf8W0xxgKJlmUFfJc5Dg4OksTwUa/Xi3DOL8v/pzgRGY/HuwT8I3F4LxqJ6CV0GQeUCexzBlEroNZ6Q45521ctuH33xpSy5iffPnm/nanpaybqw+svYODDuYDY9Wta5vOfv8CMmpDY3Xslt+fcQWMIqx5V5nBIJBIwGAzgydFzrLg4/pt96sdl2Hm4A8Ph0FgAey64wgUcNyUbnBhIpVLQ7/fhdHwGhqEGJrnS6TQRWAMbkrEGmAq63a7Umbk8FLjT6cg86pjhusiY6833BWQyGSDmDve0RvFsNisJLjVmC401jPHkQLvdlkycUMZc5tHoSmBiy5C17p7xkGUul4PRaATn83mIFALy+bzMWzaPocZ6YPrFVqslpRi8bygbTE6KN5tN+V4wxqMcNm4kQaFQgGq1Co+PXmBX1FPx9viZzKvVahJ4y7YZ2I6jnWNi0Gg0FoxPvmqBV3nUvAjeXpZj2+DYjtaIcbFYXDaPGqi2Td6ieVtXrFtebPuOlEW1hDiFer2+ngqdFARMeRybTWCzl8V3T1WAS58Rj8fflEolo1wug6O4Wle1OD0+5VUqFc2h/2sXBD5D100UV2AFXfrq5ft04Mi+/wF2wLwPlG8OLwAAAABJRU5ErkJggg==}
+image create photo i22picture -data {iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAABHNCSVQICAgIfAhkiAAAA6NJREFUOE+1VM9vVFUU/u59M29mbElLgZDQqhGhkmDAFJGStpvaEGOiC407ViT8iIkbt8ToRlembJoYjX+A7ho2ghGDbvDHChqsDakJ8sOpMwU6r++9e9999z3PudOhnQ5TV5zk5M3cc893v/Pdcy7wlExswC1scYalWL5FvCPUAj5IkZ6O6PqCop83toh3DY1mWZZ3s8nJyROUKbtmPyHA5R8g9wg4tdZ2yOF5HoIgyGjP8Sfkd1taYSmO1+v1q/T1kyTp2Oj7fttamqaYn5/H4uIipqam0Nvb25EzNjY2yQwPz87OSk74P6OKACEwNPQs9r64H5cuXaaU9jtlItVq9QgDLx898VxByu4SBo8UFudqJLKP0dFx3Fr4E+VSCeWKjxde3o6B3e2se/sqNQYOby39ZmO94uWbTs9TD7o6gKyxDSMjx+AXfXz28XlU796FLBbx6ecXcO33H1HZf4cqaTLvKfWj8bDxiDV+85trH12MdWMdOBcwy32w9V14afgg/iI94zgGdU2bWoJkYd9IiAGtzULXBak1MJlxiTagsmpD2L1zEEffGsfVH75HFEU4dfocpCfBF2y03nDA+owVqYpSuYSvv/yi3AIWaZo4YLE0iCMj407DD98/DelLjE+8TrEM7779BrGJIeQac/rwnRuTQ5J7lHPx8hV3KAMLY4hx2mQs+m5jYaEfQ4PPI4xDvHboFbfRVWMjjLx6CDZPCZDcpDBJikTlVJXFvb/vgebB7XWtwGxbbipVBKqGgZ27sHd4GPerd5qVCAlJNJRRUCRHTGSUSaATRYzZm3cgSXM2B8xskzXWhg5Z7bmJX3/5GWfOfUA9ueQ2tvo1IX1jnSDSlkANtNFQOoZS/JzwRXKrCycFXV5CGpvHyZAPEIl/sLxcw8QEPxNrRoOtYoU0t1RyTlIQIaXJLXVN8wFsXWWTMZXGUjDblq+U5vDHzRt4572TDpV1S62AihKokBiGIeIwQrSqEa4mCIPI7XPtR8aMi0rRZiqxfUA0VuQ8rl/fA55KZmJ0jqChkeUGGY13wlKolNjS/zhBob/kwNkK9Hr5mvTRHcDUzvkctt3fR6A+vEIBBVnEw3qIjOt0w0IDkhVR9omfX6ERf4YDjzUuVvzttqe8w+m92WJzG5XVfcwA3135aXOY36QNJqglWetmHwefnPr2bEfG2gLJIKenp7+iv+sQ9KsNrz3UbM9ugK11ugcxMzPzgL6dD2+XZCHlv/8BOGD74JMQGEEAAAAASUVORK5CYII=}
+image create photo i22addfolder -data {iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAABHNCSVQICAgIfAhkiAAAAi5JREFUOE+lVU1Lw0AQbdPUpLQg1UsrLXgT/4NX8SKevHn2P3gsguAfETwU/QHeBG9eBC+eGw0KVrBKzUcT31syYU2TfuDCMJu3M29nZ2cn5TiOSxhlyAqkCbGTb+Jc/IF8QDwCiw4zMaxAr1Wr1X4Yhtu6M7AH3/ePgA0hkxnEXItkXYgZsQXSNvSb7hwEAbF1SE131G0wDyHfkM9kXhJi2pF8lHFQOMZNDq5DfqvVunZd9xQg0xaVkxxX8dEFweUcgqJlBlUD1z60Awn1VBhYuAJoFHnPwZlf8il/TrhbvdvtHjuOc4C5NYegaNnrdDrNwWBwDoOAqSB52zCMC8x5AenNFjEU4AZSWY+iiBXkSsQmSN//Qar2AgdrXnHqVTHmommaLJ0/A2Wo22WXc791B/WyULdPULwApkRpHHEr13sGOEUM23sQ8QLUwPFOoDble1EtxIxM7wV3GYKl+gR9U2JE9opvbsA3rxNNPM+TZz5pNBqrSBd7y8whxMzjXmK5C30rXsB7mKsSxOZnuMgdTBcmZnss6gc6ztP4kNzXads2A1AdMI0Y86kyo0FmxDhBiMiniC3Linu9HhvQF2RCYu4ygjHzyCPafEFCmLxGFj7H83g8HgKT5VRXKpUQb+ARAFtn2t1IyCjY5TZAfCgeIOlj/gIJEqwovwyQp1b3IalgXuTvkE0Jv0kqxKKTffKV/kBooaeFXY9nZvNfujFJo9e3lbQIlt50fmz56C/bI8zNwVcRLgAAAABJRU5ErkJggg==}
+image create photo i20cancel -data {iVBORw0KGgoAAAANSUhEUgAAABMAAAAVCAYAAACkCdXRAAAABHNCSVQICAgIfAhkiAAAA9BJREFUOE+tVE1MU1kYPe+9tgiaOIzQRqbBYupAQEkhE0KCcUoYNEw0bnThT6IRFsrChYnRaKLRxMSNC12w0A0xuuoG/JkFZuKQkUQZ+acodCTAlNRaoNYKVNr3rue+2MYKs/NLvrz2vXvPPd/5zneVcDiM7xXqWkCJ2Vnv8LFjotvtFjNtbWKtNUYiAaHrWZ9WgQXb20VvQ8NTZ34+Gs+cwfStW1ianBz9ele4s1N0b9smXuzaJRKhUGH6m/J1mUYyiacul/j96lXYVBUK87++PkzPz6Py/n1FbloMBMTA/v2ob23F/NQUhru6UN3Z+VdeSUl9FjPVakVuURES0SgQj0N8+ABnXR2WxsYQ6+sT+uIihg4fRs2hQ1i3fj2c1dWoamzEyPHjXnnQqjLdZDX06BHgcECsrECJxeDZtw+BCxcwduqUKPF4ULB1K4Q87NMnICcHGnNNMHtTk5LUNMy9egUlNxcG2dl37IBGYDUSwc8NDTDevgWEwNLHj+jv6EDF7ds+CZalmQnPeN/bK8ZPnsRv585BUBfYbEBBAWCxAJOTZvlGRQX+vHEDpTdvYpPXa+q5qkz58oeaGmWd243Qy5dAXh5ABgiFIPx+6ARTWeqL9nYUNTdngP4XTAq9NDMDy4YNZjlSO4Ng+uvXsNbXY/TBAyjFxXCdPm0ySgd5fxPcPNrcLIpZRqHLBZ1ssLwMY3YWqt2O2MICguPjqO3pyQKSKKvK/PfaNWFjp8qk0MPDJhBoGdBzIpVC3saN0Fl2Khot/5ZHFli4o0NEWcIv9JJBs8px0WprkSwthXXPHgiy0ujB8t27Ebh8mZSzIwMW9/tF4OJF1LW0ACMj0KmRpaoKE0+e4I9Ll+jhODQ2RechLho59vw5YoODWXObAZu6fh2epibk0Ih6IADrzp0IUa9p6lNOCww9fAiNXRQccGkPz969CJw/n0UtA5bPLk3wNJ0DLkuKU5eBx4/h8fnw05EjSLAxkYkJaGxMilpurqyExq7PdXVl2GXAnCdOKD8eOIC/29qw8OYNeu7eRemdO6ZZl8nGxTEbJDu1rAyq0wlQTwfH6n1/f4adaY0UuySzoKVFWdE08c+9eyg8exY6Fy9QdDOol7plC2aePYOD4zVAxnMcq+1XrvjkXgunQwkGgyZQktdP+snfB5mt/O+V7wzDoDNoDd7KEV49gmvtfDqOHlWsHHIrrSNTCbFrEigN9gWwUNd175f8VQhhVxTlnaZp3Zqq+jWLxcfNEclGgtg4uyZY+nLkBk6OoBS6yUQ+0ymrlMwIlkmCm+9kpuMzdkbmHFRF+YcAAAAASUVORK5CYII=}
+image create photo i20valid -data {iVBORw0KGgoAAAANSUhEUgAAABMAAAAWCAYAAAAinad/AAAABHNCSVQICAgIfAhkiAAAA19JREFUOE+tlQlsDFEYx//zdta2pYpG42wtWnRdtW2ziF4kpaSxqDhCSYVGgogrdR8JIq6EhLjvJqVxtI60jrLSsshiG6VhS0vZVbqrumt3dveZGWYtjaQV3+TN9475fvl/75s3w1BK8b+MtVgs/4sF8i+kF2Y9XZg/hOYUJFNDTbEvNcZsNreIx3mcWHxBQzNGZUHGyFCsPw+H3Y5FiUfQYtjZx1tpHa1EavxkvGl8iKg2iSgqPwVXXUDL0vzwxVR+o/Ik0mJnoKLhBt59M8JNOVgsZkR1jGsZ7FDZElV6wjRYvTWwcW8RHqSGyWKE1WpDUuR0ptkFuFd1iXKkAYMjUlDVeB8cdUEZqMHFkhPIHrYXDH81C+bgvuKYPgcTkubgteM+PrpeQd0uAyXGcxjYOQURHVSMUMVmwfIMW2hc/wQEt26PavtDhCl6g3AKlBpvYqp6rQjywertH7DmSirNOt2LXqs4yJ+JX6eiur6C6qsLkBozDa8adfjisWBISAby7xzEjNhNCJQH+14t4uAasLl4Ek2OTcOqmftgqCvkxxOp1W7mkRQHShdBmzwLn91VYvVUwaPxvPYBPE6CYUqtT5WobO/dbBoTHY8+PQajHiZkpa5G/+iByClIoYdLl9OgNgqoumpgst8DSxQIV8Th0u1TmDt0t0+R1GE59zewgQSEsnB4rHjeWIQBynhEdhqEqw9yMSkxGyZHGT5xJoxon40iwxkMV05El5Dev6kSgLJD286F5ZftibM6zdCEa0VgLVcOmZxA3TMJNm8tXtp1/KZHIcjdGYV3T2Nx8lFGRtgmysTj5Pa6cFy/klbZHiFz9DJQuZNXeB12txVO+pVfd2JM6GrsL9wAbb8ViOk2qokqcc+EG0taIUuznUnvuxQ785aj5r0J6rZTICcBvFIbBgWPx5M3OrQmoX8FiRx/rfERYxll6IB1O25lrq/sbsR4zTzUuowII31xRDcfG9OuTW6Sm99Ek6+G1+sF53HhzKMN9FldCbQjM6EzXEavgASMi17A8Ab/RghfPL4JJsIEgMfjEb3UF8ZP3t+kuU/XIjxEhdkxu8JYIv8oBQtAmUwmNt+cP0wASNA/vfCvEABCoATw9yzL/tgziSxMCEGCOslLasU0fsKE56W+5IX175bmlJqoOLnzAAAAAElFTkSuQmCC}
+image create photo i22folder -data {iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAABHNCSVQICAgIfAhkiAAAAX1JREFUOE+1lc1Og0AUhS8zFGwwUaNr1yYuXBgTG3YsuvRZeQTXXbr1BTBitCWNzB94B1psAjNlDE5C2sy583HmzAUA/ml4B1zfcg+FWm3Re9IefItK1FN/J0r8+2LRjdJjVVW1aSRJssSVxLh6QNDbv8GLIlgqpXpxUEqhKIoKaxYD601Tax3FIs/zZ/wNOOe9wiAIenPHJuI4TrTDuzRNiZTyWP0oXRvJsuxegz8eltc+IU4RWm9yejZ/1+Dt69tKfbM1rd06ahAeheew+dx8NYclJcOLI9apVQfBknJQIKEFKwGiEoDtNljsMimQpcce7DWOJwBLKoACeBrsCYGO5USO/bZldxnzNuMpHOPOuyi0W46uHd8zg9E3O6dAdhlzzHgacMvZHZ7AR9m53QwNJLDdsGubw5uVJYeSsfF9bIC22SKHQOjj2ytgZQlsBNjC6/L2CQNSk1njeB5cqOjkssl7iqFqCD10/ISwKwvw8PNlKeskXb8dU/inmh8bq8GP0zuaSgAAAABJRU5ErkJggg==}
+
+
+proc modernFileDialog {startDir} {
+global currentDir selectedFile
+set selectedFile ""
+set currentDir $startDir
+
+# Fenêtre modale
+toplevel .dlg
+wm title .dlg "Sélectionner un fichier"
+wm geometry .dlg 800x500
+wm transient .
+wm protocol .dlg WM_DELETE_WINDOW {destroy .dlg; set selectedFile ""}
+
+# Frame du haut pour nom du fichier
+pack [frame .dlg.topFrame -padx 5 -pady 5] -fill x
+pack [label .dlg.topFrame.nameLbl -text "Fichier: "] -side left -padx 5
+pack [entry .dlg.topFrame.nameEntry -width 50 -textvariable selectedFile] -side left -fill x -expand 1
+  
+# ---------------- Succession de boutons du chemin + bouton + ----------------
+pack [frame .dlg.pathButtonsFrame] -fill x -padx 5 -pady 5
+
+# Frame principale gauche/droite
+pack [frame .dlg.main] -fill both -expand 1
+pack [frame .dlg.main.left -padx 5] -side left -fill y -expand 0
+pack [frame .dlg.main.right] -side right -fill both -expand 1
+
+# Liens rapides à gauche
+set quickLinks [list Documents Bureau Images Musique Vidéos Corbeille Téléchargements]
+set quickimg [list i22doc i22desktop i22picture i22music i22video i22bin i22download]
+set idx 0
+foreach link $quickLinks { 
+  set wName [string map {" " "_" "é" "e" "è" "e" "à" "a"} [string tolower $link]]
+  button .dlg.main.left.$wName -text $link -image [lindex $quickimg $idx] -compound left -command [list setCurrentDir $link]
+  pack .dlg.main.left.$wName -anchor nw -pady 1 -fill x
+  set idx [incr idx]
+    }
+
+# Frame pour la listbox
+frame .dlg.main.right.listFrame
+pack .dlg.main.right.listFrame -side top -fill both -expand 1 -pady 5
+
+# Listbox + scrollbar dans sa frame
+listbox .dlg.main.right.listFrame.fileList -width 60 -height 20
+pack .dlg.main.right.listFrame.fileList -side left -fill both -expand 1
+scrollbar .dlg.main.right.listFrame.scroll -orient vertical -command ".dlg.main.right.listFrame.fileList yview"
+.dlg.main.right.listFrame.fileList configure -yscrollcommand ".dlg.main.right.listFrame.scroll set"
+pack .dlg.main.right.listFrame.scroll -side right -fill y
+
+    # ---------------- Fonctions internes ----------------
+    proc updatePathButtons {} {
+        global currentDir
+        destroy .dlg.pathButtonsFrame
+        frame .dlg.pathButtonsFrame
+        pack .dlg.pathButtonsFrame -after .dlg.topFrame -side top -fill x -padx 5 -pady 5
+        set dirs [split [file normalize $currentDir] "/"]
+        set pathAccum "/"
+        foreach d $dirs {
+            if {$d eq ""} {continue}
+            set pathAccum [file join $pathAccum $d]
+            button .dlg.pathButtonsFrame.b$pathAccum -text $d -image i22folder -compound left -command [list setCurrentDir $pathAccum]
+            pack .dlg.pathButtonsFrame.b$pathAccum -side left -padx 2
+        }
+        button .dlg.pathButtonsFrame.plus -image i22addfolder -command {createNewFolderWindow}
+        pack .dlg.pathButtonsFrame.plus -side right -padx 5
+    }
+
+    proc listDir {dir} {
+        .dlg.main.right.listFrame.fileList delete 0 end
+        foreach f [lsort [glob -nocomplain -directory $dir *]] {
+            if {[file isdirectory $f]} {
+                .dlg.main.right.listFrame.fileList insert end "[file tail $f]/"
+            } else {
+                .dlg.main.right.listFrame.fileList insert end [file tail $f]
+            }
+        }
+    }
+
+    proc setCurrentDir {dir} {
+        global currentDir
+        set currentDir [file join $::env(HOME) $dir]
+        updatePathButtons
+        listDir $currentDir
+    }
+
+proc createNewFolderWindow {} {
+global currentDir
+toplevel .dlg.newFolder
+wm title .dlg.newFolder "Nouveau dossier"
+wm transient .dlg
+label .dlg.newFolder.lbl -text "Nom du dossier:"
+entry .dlg.newFolder.entry -width 30
+button .dlg.newFolder.ok -text "Créer" -command {
+set newName [.dlg.newFolder.entry get]
+if {$newName eq ""} {return}
+file mkdir [file join $currentDir $newName]
+destroy .dlg.newFolder
+listDir $currentDir
+}
+
+button .dlg.newFolder.cancel -text "Annuler" -command {destroy .dlg.newFolder}
+pack .dlg.newFolder.lbl -side top -pady 5
+pack .dlg.newFolder.entry -side top -pady 5
+pack .dlg.newFolder.ok .dlg.newFolder.cancel -side left -padx 10 -pady 5
+}
+
+# Boutons en bas
+pack [frame .dlg.buttons] -fill x -padx 10 -pady 5
+
+button .dlg.buttons.open -text "Ouvrir" -image i20valid -compound left  -command {
+        global currentDir selectedFile
+        set sel [.dlg.main.right.listFrame.fileList curselection]
+        if {[llength $sel] == 0} {return}
+        set selItem [.dlg.main.right.listFrame.fileList get [lindex $sel 0]]
+        if {[string match "*/*" $selItem]} {
+            set CurrentDir [file join $currentDir $selItem]
+            return
+        } else {
+			global currentDir ; set s "/"
+            set selectedFile [file tail $selItem]
+            set selectedFile $currentDir$s$selectedFile
+            destroy .dlg
+        }
+    }
+    button .dlg.buttons.cancel -text "Annuler" -image i20cancel -compound left -command {
+        global selectedFile
+        set selectedFile ""
+        destroy .dlg
+    }
+    pack .dlg.buttons.open .dlg.buttons.cancel -side right -padx 5
+    
+
+    # Binds
+    bind .dlg.main.right.listFrame.fileList <Double-1> {
+        global currentDir selectedFile
+        set sel [.dlg.main.right.listFrame.fileList get active]
+        if {[string match "*/*" $sel]} {
+            setCurrentDir [file join $currentDir $sel]
+        } else {
+            set selectedFile [file tail $sel]
+            destroy .dlg
+        }
+    }
+    # Bind pour recherche alphabétique
+bind .dlg.main.right.listFrame.fileList <Key> {
+    set c %A  ;# caractère tapé
+    set found 0
+    for {set i 0} {$i < [.dlg.main.right.listFrame.fileList size]} {incr i} {
+        set item [.dlg.main.right.listFrame.fileList get $i]
+        # On enlève le "/" final pour les dossiers
+        if {[string index $item end] eq "/"} {
+            set item [string range $item 0 end-1]
+        }
+        if {[string match "$c*" $item]} {
+            .dlg.main.right.listFrame.fileList selection clear 0 end
+            .dlg.main.right.listFrame.fileList selection set $i
+            .dlg.main.right.listFrame.fileList see $i
+            set found 1
+            break
+        }
+    }
+    if {!$found} {
+        bell  ;# signal si rien trouvé
+    }
+}
+    
+
+    bind .dlg.main.right.listFrame.fileList <<ListboxSelect>> {
+        global selectedFile
+        set sel [.dlg.main.right.listFrame.fileList curselection]
+        if {[llength $sel] > 0} {
+            set item [.dlg.main.right.listFrame.fileList get [lindex $sel 0]]
+            if {[string match "*/*" $item]} {
+                set selectedFile ""
+            } else {
+                set selectedFile $item
+            }
+        }
+    }
+
+    # Initialisation
+    updatePathButtons
+    setCurrentDir $currentDir
+
+    tkwait window .dlg
+    return $selectedFile
+}
+
+# exemple : décommenter les ligne en dessous.
+#wm title . "Fenêtre principale"
+#button .open -text "Ouvrir un fichier" -command {
+#   set f [modernFileDialog [pwd]]
+ #   if {$f ne ""} {puts "Fichier choisi : $f"} else {puts "Annulé"}
+#}
+#pack .open -padx 20 -pady 20

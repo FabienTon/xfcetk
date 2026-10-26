@@ -1,0 +1,44 @@
+# For Xftk Appearance
+# Made in february 2026 by Fabien
+# More informations on www.tcltk.fr
+
+
+# Form appearance
+proc Form_Xftk_Appearance {} { 
+if {[winfo exist ._fapp] eq 1} {destroy ._fapp}
+toplevel ._fapp
+wm geometry ._fapp 412x560+200+50
+wm iconphoto ._fapp i44appearance
+wm title ._fapp "Apparence"
+pack [frame ._fapp.f0 -bg white] -fill x
+pack [label ._fapp.f0.logo -bg white -image i44appearance ] -side left -fill both
+pack [frame ._fapp.f0.f1 -bg white -padx 5 -pady 5] -fill both -expand 1
+pack [label ._fapp.f0.f1.l2 -text "Apparence" -font {Serif 11 bold} -bg white -fg black -anchor w] -fill both -expand 1
+pack [label ._fapp.f0.f1.l3 -text "Personnaliser l'apparence du bureau" -font {Serif 10} -bg white  -fg black -anchor w] -fill both -expand 1
+
+# Main notebook in body
+pack [frame ._fapp.fb -bg #CFCFCF -padx 5 -pady 5] -fill both -expand 1
+pack [ttk::notebook ._fapp.fb.nb] -fill both -expand 1
+ttk::frame ._fapp.fb.nb.tab1
+._fapp.fb.nb add ._fapp.fb.nb.tab1 -text "Style"
+pack [listbox ._fapp.fb.nb.tab1.lst1 -font {Serif 9}] -fill both -expand 1 -padx 5 -pady 5
+ttk::frame ._fapp.fb.nb.tab2
+._fapp.fb.nb add ._fapp.fb.nb.tab2 -text "Icônes"
+pack [listbox ._fapp.fb.nb.tab2.lst2 -font {Serif 9}] -fill both -expand 1 -padx 5 -pady 5
+ttk::frame ._fapp.fb.nb.tab3
+._fapp.fb.nb add ._fapp.fb.nb.tab3 -text "Polices"
+pack [label ._fapp.fb.nb.tab3.l0 -font {Serif 9 bold} -text "Police par défaut" -anchor w ] -fill x -padx 5 -pady 5
+pack [button ._fapp.fb.nb.tab3.b1 -font {Serif 9} -text "Déjà vue               9" -anchor e ] -fill x -padx 10 -pady 5
+pack [label ._fapp.fb.nb.tab3.l2 -font {Serif 9 bold} -text "Police à chasse fixe par défaut" -anchor w ] -fill x -padx 10 -pady 5
+pack [button ._fapp.fb.nb.tab3.b3 -font {Serif 9} -text  "Déjà vue               9" -anchor e  ] -fill x -padx 5 -pady 5
+pack [label ._fapp.fb.nb.tab3.l4 -font {Serif 9 bold} -text "Rendu" -anchor w ] -fill x -padx 10 -pady 5
+pack [checkbutton ._fapp.fb.nb.tab3.cb5 -font {Serif 9 bold} -text "Activer l'anticrénelage" -anchor w ] -fill x -padx 10 -pady 5
+
+ttk::frame ._fapp.fb.nb.tab4
+._fapp.fb.nb add ._fapp.fb.nb.tab4 -text "Paramètres"
+pack [text ._fapp.fb.nb.tab4.t4 -font {Serif 9}] -fill both -expand 1 -padx 5 -pady 5
+# Bottom button menu
+pack [frame ._fapp.bot -padx 5 -pady 5] -fill x -side bottom
+pack [button ._fapp.bot.bhelp -text "Aide" -image i16help -compound left] -side left -fill both
+pack [button ._fapp.bot.bcancel -text "Fermer" -image i16quit -compound left -command {destroy ._fapp}] -side right -fill both
+}
